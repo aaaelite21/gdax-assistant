@@ -21,5 +21,6 @@
   "bugs": {
     "url": "https://github.com/aaaelite21/gdax-assistant/issues"
   },
-  "homepage": "https://github.com/aaaelite21/gdax-assistant#readme"
+  "homepage": "https://github.com/aaaelite21/gdax-assistant#readme",
+  "devDependencies": {}
 }

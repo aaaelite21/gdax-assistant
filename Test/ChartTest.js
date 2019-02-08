@@ -2,8 +2,8 @@ const {
     Chart,
     Candle
 } = require('../GdaxAssistant');
-const TestData = require('./TestData');
-const TestReturnedData = TestData.Gdax15MinutesOfHistoricData;
+const TestData = require('../../gdax-sim-test-data');
+const TestReturnedData = TestData.gdaxOutput.fifteenOneMinutes;
 const assert = require('assert');
 
 describe('Gdax-Chart', () => {
@@ -98,5 +98,17 @@ describe('Gdax-Chart', () => {
             assert.equal(atr, t / (c.candles.length - 2));
         });
 
+    });
+    describe('#Indexes and Aroon', () => {
+        let c = new Chart(TestReturnedData);
+        it('returns the aroon up', () => {
+            assert.equal(c.Aroon(5).up, 100)
+        });
+        it('returns the aroon down', () => {
+            assert.equal(c.Aroon(5).down, 60)
+        });
+        it('returns the aroon oscillator', () => {
+            assert.equal(c.Aroon(5).oscillator, 40)
+        });
     });
 });

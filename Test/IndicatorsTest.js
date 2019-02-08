@@ -3,30 +3,55 @@ const {
     Sma,
     Atr,
     Highest,
-    Lowest
+    Lowest,
+    IndexOfHighest,
+    IndexOfLowest,
+    Aroon
 } = GdaxAssistant.Indicators;
 const assert = require('assert');
-const TestData = require('./TestData');
-const TestTimeFrame = TestData.BTC_USD_10_HOURS.reverse();
+const TestData = require('../../gdax-sim-test-data');
+const TestTimeFrame = TestData.candles.oneHour.slice().reverse();
 describe('#Indicators', () => {
     describe('#Sma', () => {
         it('gets the sma', () => {
-            assert.equal(Sma(TestTimeFrame).toFixed(2), "3703.16");
+            assert.equal(Sma(TestTimeFrame).toFixed(2), "435.14");
         });
     });
     describe('#Atr', () => {
         it('gets the Atr', () => {
-            assert.equal(Atr(TestTimeFrame).toFixed(2), "10.64");
+            assert.equal(Atr(TestTimeFrame).toFixed(2), "0.07");
         });
     });
     describe('#Highest', () => {
         it('gets the Highest High as default', () => {
-            assert.equal(Highest(TestTimeFrame), 3745);
+            assert.equal(Highest(TestTimeFrame), 436);
         });
     });
     describe('#Lowest', () => {
         it('gets the Lowest Low as default', () => {
-            assert.equal(Lowest(TestTimeFrame), 3681.8);
+            assert.equal(Lowest(TestTimeFrame), 434.32);
+        });
+    });
+    describe('#IndexOfLowest', () => {
+        it('gets the index of the Lowest Low as default', () => {
+            assert.equal(IndexOfLowest(TestTimeFrame), 47);
+        });
+    });
+    describe('#IndexOfHighest', () => {
+        it('gets the index of the highest high as default', () => {
+            assert.equal(IndexOfHighest(TestTimeFrame), 14);
+        });
+    });
+    describe('#Aroon', () => {
+        let aroon = Aroon(TestTimeFrame);
+        it('gets the aroon-up', () => {
+            assert.equal(aroon.up.toFixed(2), 76.67);
+        });
+        it('gets the aroon-down', () => {
+            assert.equal(aroon.down.toFixed(2), 3.33);
+        });
+        it('gets the aroon-osilator', () => {
+            assert.equal(aroon.oscillator.toFixed(2), 73.33);
         });
     });
 });
