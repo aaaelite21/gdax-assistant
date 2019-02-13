@@ -28,17 +28,17 @@ describe('#Indicators', () => {
         });
     });
     describe('#Lowest', () => {
-        it('gets the Lowest Low as default', () => {
-            assert.equal(Lowest(TestTimeFrame), 434.32);
+        it('gets the Lowest close as default', () => {
+            assert.equal(Lowest(TestTimeFrame), 434.33);
         });
     });
     describe('#IndexOfLowest', () => {
-        it('gets the index of the Lowest Low as default', () => {
-            assert.equal(IndexOfLowest(TestTimeFrame), 47);
+        it('gets the index of the Lowest close as default', () => {
+            assert.equal(IndexOfLowest(TestTimeFrame), 58);
         });
     });
     describe('#IndexOfHighest', () => {
-        it('gets the index of the highest high as default', () => {
+        it('gets the index of the highest close as default', () => {
             assert.equal(IndexOfHighest(TestTimeFrame), 14);
         });
     });

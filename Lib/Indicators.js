@@ -14,7 +14,7 @@ function Atr(candles) {
 };
 
 function Highest(candles, lhoc) {
-    lhoc = lhoc === undefined ? 'high' : lhoc;
+    lhoc = lhoc === undefined ? 'close' : lhoc;
     let points = candles.map((candle) => {
         return candle[lhoc];
     });
@@ -23,7 +23,7 @@ function Highest(candles, lhoc) {
 };
 
 function IndexOfHighest(candles, lhoc) {
-    lhoc = lhoc === undefined ? 'high' : lhoc;
+    lhoc = lhoc === undefined ? 'close' : lhoc;
     let points = candles.map((candle) => {
         return candle[lhoc];
     });
@@ -40,7 +40,7 @@ function IndexOfHighest(candles, lhoc) {
 };
 
 function Lowest(candles, lhoc) {
-    lhoc = lhoc === undefined ? 'low' : lhoc;
+    lhoc = lhoc === undefined ? 'close' : lhoc;
     let points = candles.map((candle) => {
         return candle[lhoc];
     });
@@ -49,7 +49,7 @@ function Lowest(candles, lhoc) {
 };
 
 function IndexOfLowest(candles, lhoc) {
-    lhoc = lhoc === undefined ? 'low' : lhoc;
+    lhoc = lhoc === undefined ? 'close' : lhoc;
     let points = candles.map((candle) => {
         return candle[lhoc];
     });
@@ -77,14 +77,68 @@ function Aroon(candles, lhoc) {
     }
 };
 
+function Vwap(candles) {
+    let sum = 0;
+    let totalVolume = 0;
+    for (let i = 0; i < candles.length; i++) {
+        sum += ((candles[i].high + candles[i].low + candles[i].open) / 3) * candles[i].volume;
+        totalVolume += candles[i].volume;
+    }
+    return sum / totalVolume;
+}
+
+function AlexEma(candles, lhoc) {
+    lhoc = lhoc === undefined ? 'close' : lhoc;
+    let sum = 0;
+    let total = 0;
+
+    let points = candles.map((candle) => {
+        return candle[lhoc];
+    });
+
+    points.forEach((value, index) => {
+        let scale = index + 1
+        total += scale;
+        sum += scale * value;
+    })
+
+    return sum / total;
+}
+
+function Rms(candles, lhoc) {
+    lhoc = lhoc === undefined ? 'close' : lhoc;
+    let mean = 0,
+        squaredMean = 0;
+    let points = candles.map((candle) => {
+        return candle[lhoc];
+    });
+
+    points.forEach((value) => {
+        mean += value;
+    });
+
+    mean /= points.length;
+
+    points.forEach((value) => {
+        squaredMean += Math.pow(value - mean, 2);
+    });
+
+    squaredMean /= points.length;
+
+    return Math.sqrt(squaredMean);
+}
+
 module.exports = {
+    AlexEma: AlexEma,
     Atr: Atr,
     Aroon: Aroon,
     Highest: Highest,
     IndexOfHighest: IndexOfHighest,
     IndexOfLowest: IndexOfLowest,
     Lowest: Lowest,
-    Sma: Sma
+    Rms: Rms,
+    Sma: Sma,
+    Vwap: Vwap
 
 }
 

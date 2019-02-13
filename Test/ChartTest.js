@@ -49,13 +49,13 @@ describe('Gdax-Chart', () => {
     });
     describe('#Highest', () => {
         let c = new Chart(TestReturnedData);
-        it('returns the highest high of the designated time frame', () => {
+        it('returns the highest close of the designated time frame', () => {
             let h = c.Highest(c.candles.length);
-            assert.equal(h, 3689.35);
+            assert.equal(h, 3688.02);
         });
-        it('returns the highest high of the offset time frame', () => {
+        it('returns the highest close of the offset time frame', () => {
             let h = c.Highest(c.candles.length - 4, 4);
-            assert.equal(h, 3686.55);
+            assert.equal(h, 3686.06);
         });
         it('returns the highest of the lhoc value', () => {
             let h = c.Highest(c.candles.length, 0, 'low');
@@ -64,13 +64,13 @@ describe('Gdax-Chart', () => {
     });
     describe('#Lowest', () => {
         let c = new Chart(TestReturnedData);
-        it('returns the lowest low of the designated time frame', () => {
+        it('returns the lowest close of the designated time frame', () => {
             let l = c.Lowest(c.candles.length);
-            assert.equal(l, 3681.8);
+            assert.equal(l, 3683.56);
         });
-        it('returns the lowest lowe of the offset time frame', () => {
+        it('returns the lowest close of the offset time frame', () => {
             let l = c.Lowest(c.candles.length - 11, 11);
-            assert.equal(l, 3681.8);
+            assert.equal(l, 3683.56);
         });
         it('returns the lowest of the lhoc value', () => {
             let l = c.Lowest(c.candles.length - 11, 11, 'high');

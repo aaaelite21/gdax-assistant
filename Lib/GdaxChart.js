@@ -10,6 +10,11 @@ class GdaxChart {
         }
     }
 
+    AlexEma(length, offset, lhoc) {
+        let targetTimeFrame = this.PreProcess(length, offset);
+        return Indicators.AlexEma(targetTimeFrame, lhoc);
+    }
+
     Aroon(length, offset, lhoc) {
         let targetTimeFrame = this.PreProcess(length, offset);
         return Indicators.Aroon(targetTimeFrame, lhoc)
@@ -40,9 +45,19 @@ class GdaxChart {
         return Indicators.Lowest(targetTimeFrame, lhoc);
     }
 
+    Rms(length, offset, lhoc) {
+        let targetTimeFrame = this.PreProcess(length, offset);
+        return Indicators.Rms(targetTimeFrame, lhoc);
+    }
+
     Sma(length, offset, lhoc) {
         let targetTimeFrame = this.PreProcess(length, offset);
         return Indicators.Sma(targetTimeFrame, lhoc);
+    }
+
+    Vwap(length, offset) {
+        let targetTimeFrame = this.PreProcess(length, offset);
+        return Indicators.Vwap(targetTimeFrame)
     }
 
     PreProcess(length, ofs) {
