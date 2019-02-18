@@ -10,6 +10,11 @@ class GdaxChart {
         }
     }
 
+    Aroon(length, offset, lhoc) {
+        let targetTimeFrame = this.PreProcess(length, offset);
+        return Indicators.Aroon(targetTimeFrame, lhoc)
+    }
+
     Atr(length, offset) {
         let targetTimeFrame = this.PreProcess(length, offset);
         return Indicators.Atr(targetTimeFrame);
@@ -17,20 +22,37 @@ class GdaxChart {
 
     Highest(length, offset, lhoc) {
         let targetTimeFrame = this.PreProcess(length, offset);
-        if (lhoc === undefined) lhoc = 'high';
         return Indicators.Highest(targetTimeFrame, lhoc);
+    }
+
+    IndexOfHighest(length, offset, lhoc) {
+        let targetTimeFrame = this.PreProcess(length, offset);
+        return Indicators.IndexOfHighest(targetTimeFrame, lhoc);
+    }
+
+    IndexOfLowest(length, offset, lhoc) {
+        let targetTimeFrame = this.PreProcess(length, offset);
+        return Indicators.IndexOfLowest(targetTimeFrame, lhoc);
     }
 
     Lowest(length, offset, lhoc) {
         let targetTimeFrame = this.PreProcess(length, offset);
-        if (lhoc === undefined) lhoc = 'low';
         return Indicators.Lowest(targetTimeFrame, lhoc);
+    }
+
+    Rms(length, offset, lhoc) {
+        let targetTimeFrame = this.PreProcess(length, offset);
+        return Indicators.Rms(targetTimeFrame, lhoc);
     }
 
     Sma(length, offset, lhoc) {
         let targetTimeFrame = this.PreProcess(length, offset);
-        if (lhoc === undefined) lhoc = 'close';
         return Indicators.Sma(targetTimeFrame, lhoc);
+    }
+
+    Vwap(length, offset) {
+        let targetTimeFrame = this.PreProcess(length, offset);
+        return Indicators.Vwap(targetTimeFrame)
     }
 
     PreProcess(length, ofs) {
