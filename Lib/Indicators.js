@@ -87,24 +87,6 @@ function Vwap(candles) {
     return sum / totalVolume;
 }
 
-function AlexEma(candles, lhoc) {
-    lhoc = lhoc === undefined ? 'close' : lhoc;
-    let sum = 0;
-    let total = 0;
-
-    let points = candles.map((candle) => {
-        return candle[lhoc];
-    });
-
-    points.forEach((value, index) => {
-        let scale = index + 1
-        total += scale;
-        sum += scale * value;
-    })
-
-    return sum / total;
-}
-
 function Rms(candles, lhoc) {
     lhoc = lhoc === undefined ? 'close' : lhoc;
     let mean = 0,
@@ -129,7 +111,6 @@ function Rms(candles, lhoc) {
 }
 
 module.exports = {
-    AlexEma: AlexEma,
     Atr: Atr,
     Aroon: Aroon,
     Highest: Highest,

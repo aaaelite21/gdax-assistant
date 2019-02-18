@@ -10,11 +10,6 @@ class GdaxChart {
         }
     }
 
-    AlexEma(length, offset, lhoc) {
-        let targetTimeFrame = this.PreProcess(length, offset);
-        return Indicators.AlexEma(targetTimeFrame, lhoc);
-    }
-
     Aroon(length, offset, lhoc) {
         let targetTimeFrame = this.PreProcess(length, offset);
         return Indicators.Aroon(targetTimeFrame, lhoc)
