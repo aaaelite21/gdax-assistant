@@ -65,10 +65,9 @@ function IndexOfLowest(candles, lhoc) {
     return indexOfMin;
 };
 
-function Aroon(candles, lhoc) {
-    lhoc = lhoc === undefined ? 'close' : lhoc;
-    let up = 100 * (candles.length - IndexOfHighest(candles, lhoc)) / candles.length;
-    let down = 100 * (candles.length - IndexOfLowest(candles, lhoc)) / candles.length
+function Aroon(candles) {
+    let up = 100 * (candles.length - IndexOfHighest(candles, 'high')) / candles.length;
+    let down = 100 * (candles.length - IndexOfLowest(candles, 'low')) / candles.length
     let oscillator = up - down
     return {
         up: up,
@@ -110,10 +109,40 @@ function Rms(candles, lhoc) {
     return Math.sqrt(squaredMean);
 }
 
+function Ichimoku(candles, tenkanLength, kijunLength, periodLength, clouOffset) {
+    let tenkansen = (Highest(candles.slice(0, tenkanLength), 'high') +
+        Lowest(candles.slice(0, tenkanLength), 'low')) / 2;
+    let kijunsen = (Highest(candles.slice(0, kijunLength), 'high') +
+        Lowest(candles.slice(0, kijunLength), 'low')) / 2;
+
+    let senkouSpanB = (Highest(candles.slice(clouOffset, clouOffset + periodLength), 'high') +
+        Lowest(candles.slice(clouOffset, clouOffset + periodLength), 'low')) / 2;
+
+    let oldTenkansen = (Highest(candles.slice(clouOffset, clouOffset + tenkanLength), 'high') +
+        Lowest(candles.slice(clouOffset, clouOffset + tenkanLength), 'low')) / 2;
+    let oldKijunsen = (Highest(candles.slice(clouOffset, clouOffset + kijunLength), 'high') +
+        Lowest(candles.slice(clouOffset, clouOffset + kijunLength), 'low')) / 2;
+    let senkouSpanA = (oldTenkansen + oldKijunsen) / 2;
+
+    return {
+        cloud: {
+            top: Math.max(senkouSpanA, senkouSpanB),
+            bottom: Math.min(senkouSpanA, senkouSpanB),
+            bullish: senkouSpanA > senkouSpanB,
+            bearish: senkouSpanB > senkouSpanA
+        },
+        tkCross: tenkansen > kijunsen,
+        ktCross: kijunsen > tenkansen,
+        kijunsen: kijunsen,
+        tenkansen: tenkansen
+    }
+}
+
 module.exports = {
     Atr: Atr,
     Aroon: Aroon,
     Highest: Highest,
+    Ichimoku: Ichimoku,
     IndexOfHighest: IndexOfHighest,
     IndexOfLowest: IndexOfLowest,
     Lowest: Lowest,

@@ -10,9 +10,9 @@ class GdaxChart {
         }
     }
 
-    Aroon(length, offset, lhoc) {
+    Aroon(length, offset) {
         let targetTimeFrame = this.PreProcess(length, offset);
-        return Indicators.Aroon(targetTimeFrame, lhoc)
+        return Indicators.Aroon(targetTimeFrame)
     }
 
     Atr(length, offset) {
@@ -23,6 +23,11 @@ class GdaxChart {
     Highest(length, offset, lhoc) {
         let targetTimeFrame = this.PreProcess(length, offset);
         return Indicators.Highest(targetTimeFrame, lhoc);
+    }
+
+    Ichimoku(tenkanLength, kijunLength, periodLength, clouOffset) {
+        let targetTimeFrame = this.PreProcess(Math.max(periodLength + clouOffset), 0);
+        return Indicators.Ichimoku(targetTimeFrame, tenkanLength, kijunLength, periodLength, clouOffset)
     }
 
     IndexOfHighest(length, offset, lhoc) {

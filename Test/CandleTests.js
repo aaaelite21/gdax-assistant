@@ -39,7 +39,15 @@ describe('#Candle', () => {
         it('has the proper volume', () => {
             assert.equal(c.volume, testCandle[5])
         });
-
+        it('has the proper percent', () => {
+            assert.equal(c.percent, 100 * (testCandle[4] - testCandle[3]) / testCandle[3])
+        });
+        it('has the proper green', () => {
+            assert.equal(c.green, testCandle[4] > testCandle[3]);
+        });
+        it('has the proper red', () => {
+            assert.equal(c.red, testCandle[4] < testCandle[3]);
+        });
     });
 
     describe("#toCsv", () => {

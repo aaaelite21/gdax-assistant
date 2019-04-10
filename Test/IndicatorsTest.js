@@ -48,10 +48,10 @@ describe('#Indicators', () => {
             assert.equal(aroon.up.toFixed(2), 76.67);
         });
         it('gets the aroon-down', () => {
-            assert.equal(aroon.down.toFixed(2), 3.33);
+            assert.equal(aroon.down.toFixed(2), 21.67);
         });
         it('gets the aroon-osilator', () => {
-            assert.equal(aroon.oscillator.toFixed(2), 73.33);
+            assert.equal(aroon.oscillator.toFixed(2), 55.00);
         });
     });
 });
