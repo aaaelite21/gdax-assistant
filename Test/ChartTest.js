@@ -99,16 +99,25 @@ describe('Gdax-Chart', () => {
         });
 
     });
-    describe('#Indexes and Aroon', () => {
+    describe('#Aroon', () => {
         let c = new Chart(TestReturnedData);
         it('returns the aroon up', () => {
-            assert.equal(c.Aroon(5).up, 100)
+            assert.equal(c.Aroon(5).up, 100);
         });
         it('returns the aroon down', () => {
-            assert.equal(c.Aroon(5).down, 60)
+            assert.equal(c.Aroon(5).down, 60);
         });
         it('returns the aroon oscillator', () => {
-            assert.equal(c.Aroon(5).oscillator, 40)
+            assert.equal(c.Aroon(5).oscillator, 40);
+        });
+    });
+    describe('#IndexOfLowest & Lowest', () => {
+        let c = new Chart(TestReturnedData);
+        it('returns index of lowest close', () => {
+            assert.equal(c.IndexOfLowest(2, 0, 'low'), 1);
+        });
+        it('returns lowest close', () => {
+            assert.equal(c.Lowest(2, 0, 'low'), 3685.56);
         });
     });
 });

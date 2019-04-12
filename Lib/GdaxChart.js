@@ -45,6 +45,12 @@ class GdaxChart {
         return Indicators.Lowest(targetTimeFrame, lhoc);
     }
 
+    Rsi(length, offset, lhoc) {
+        let targetTimeFrame = this.PreProcess(length, offset);
+        return Indicators.Rsi(targetTimeFrame, lhoc);
+
+    }
+
     Rms(length, offset, lhoc) {
         let targetTimeFrame = this.PreProcess(length, offset);
         return Indicators.Rms(targetTimeFrame, lhoc);
