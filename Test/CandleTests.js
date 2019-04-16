@@ -48,6 +48,12 @@ describe('#Candle', () => {
         it('has the proper red', () => {
             assert.equal(c.red, testCandle[4] < testCandle[3]);
         });
+        it('has the proper diff', () => {
+            assert.equal(c.diff, testCandle[4] - testCandle[3]);
+        });
+        it('has the proper height', () => {
+            assert.equal(c.height, testCandle[2] - testCandle[1]);
+        });
     });
 
     describe("#toCsv", () => {

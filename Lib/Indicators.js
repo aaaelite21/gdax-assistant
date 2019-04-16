@@ -61,7 +61,6 @@ function IndexOfLowest(candles, lhoc) {
             min = value;
         }
     });
-
     return indexOfMin;
 };
 
@@ -138,6 +137,36 @@ function Ichimoku(candles, tenkanLength, kijunLength, periodLength, clouOffset) 
     }
 }
 
+function Rsi(candles, lhoc) {
+    lhoc = lhoc === undefined ? 'close' : lhoc;
+    let points = candles.map((value) => {
+        return value[lhoc];
+    }).reverse();
+
+    let sumGains = 0,
+        countGains = 0,
+        countLosses = 0,
+        sumLoss = 0;
+
+    for (let i = 1; i < points.length; i++) {
+        let diff = points[i] - points[i - 1];
+        if (diff >= 0) {
+            sumGains += diff;
+            countGains++;
+        } else {
+            sumLoss -= diff;
+            countLosses++;
+        }
+    }
+
+    if (countGains === 0) return 0;
+    if (countLosses === 0) return 100;
+
+    let rs = (sumGains) / (sumLoss);
+
+    return 100 - (100 / (1 + rs));
+}
+
 module.exports = {
     Atr: Atr,
     Aroon: Aroon,
@@ -147,6 +176,7 @@ module.exports = {
     IndexOfLowest: IndexOfLowest,
     Lowest: Lowest,
     Rms: Rms,
+    Rsi: Rsi,
     Sma: Sma,
     Vwap: Vwap
 
