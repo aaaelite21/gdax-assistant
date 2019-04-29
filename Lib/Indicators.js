@@ -79,7 +79,7 @@ function Vwap(candles) {
     let sum = 0;
     let totalVolume = 0;
     for (let i = 0; i < candles.length; i++) {
-        sum += ((candles[i].high + candles[i].low + candles[i].open) / 3) * candles[i].volume;
+        sum += ((candles[i].high + candles[i].low + candles[i].close) / 3) * candles[i].volume;
         totalVolume += candles[i].volume;
     }
     return sum / totalVolume;
