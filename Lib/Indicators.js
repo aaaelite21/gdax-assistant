@@ -138,6 +138,7 @@ function Ichimoku(candles, tenkanLength, kijunLength, periodLength, clouOffset) 
 }
 
 function Rsi(candles, lhoc) {
+    let length = candles.length;
     lhoc = lhoc === undefined ? 'close' : lhoc;
     let points = candles.map((value) => {
         return value[lhoc];
@@ -162,7 +163,7 @@ function Rsi(candles, lhoc) {
     if (countGains === 0) return 0;
     if (countLosses === 0) return 100;
 
-    let rs = (sumGains) / (sumLoss);
+    let rs = (sumGains / length) / (sumLoss / length);
 
     return 100 - (100 / (1 + rs));
 }
