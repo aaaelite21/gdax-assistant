@@ -45,6 +45,11 @@ class GdaxChart {
         return Indicators.Lowest(targetTimeFrame, lhoc);
     }
 
+    Percentile(length, percentile, offset, lhoc) {
+        let targetTimeFrame = this.PreProcess(length, offset);
+        return Indicators.Percentile(targetTimeFrame, lhoc, percentile);
+    }
+
     Rsi(length, offset, lhoc) {
         let targetTimeFrame = this.PreProcess(length, offset);
         return Indicators.Rsi(targetTimeFrame, lhoc);
