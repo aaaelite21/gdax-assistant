@@ -52,7 +52,7 @@ describe('#Candle', () => {
             assert.equal(c.diff, testCandle[4] - testCandle[3]);
         });
         it('has the proper height', () => {
-            assert.equal(c.height, testCandle[2] - testCandle[1]);
+            assert.equal(c.range, testCandle[2] - testCandle[1]);
         });
     });
 

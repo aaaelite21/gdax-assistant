@@ -168,6 +168,16 @@ function Rsi(candles, lhoc) {
     return 100 - (100 / (1 + rs));
 }
 
+function Percentile(candles, lhoc, percentile) {
+    let arr = candles.map((candle) => {
+        return candle[lhoc];
+    });
+    arr.sort();
+    let index = Math.round(arr.length * percentile);
+
+    return arr[index];
+}
+
 module.exports = {
     Atr: Atr,
     Aroon: Aroon,
@@ -179,8 +189,8 @@ module.exports = {
     Rms: Rms,
     Rsi: Rsi,
     Sma: Sma,
-    Vwap: Vwap
-
+    Vwap: Vwap,
+    Percentile: Percentile
 }
 
 function getSum(total, num) {
