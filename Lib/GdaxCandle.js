@@ -9,7 +9,7 @@ class Candle {
         this.volume = SingleGdaxCandleArray[5];
         this.percent = 100 * (this.close - this.open) / this.open;
         this.diff = this.close - this.open;
-        this.height = this.high - this.low;
+        this.range = this.high - this.low;
         this.green = this.close > this.open;
         this.red = this.close < this.open;
     }

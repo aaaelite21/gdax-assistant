@@ -6,7 +6,8 @@ const {
     Lowest,
     IndexOfHighest,
     IndexOfLowest,
-    Aroon
+    Aroon,
+    Percentile
 } = GdaxAssistant.Indicators;
 const assert = require('assert');
 const TestData = require('../../gdax-sim-test-data');
@@ -52,6 +53,37 @@ describe('#Indicators', () => {
         });
         it('gets the aroon-osilator', () => {
             assert.equal(aroon.oscillator.toFixed(2), 55.00);
+        });
+    });
+    describe('#Percentile', () => {
+        let arr = [{
+            close: 8
+        }, {
+            close: 9
+        }, {
+            close: 7
+        }, {
+            close: 10
+        }, {
+            close: 6
+        }, {
+            close: 5
+        }, {
+            close: 1
+        }, {
+            close: 4
+        }, {
+            close: 3
+        }, {
+            close: 2
+        }];
+        const clone = arr.slice(0);
+        let percent = Percentile(arr, "close", 0.75);
+        it('gets the percentile', () => {
+            assert.equal(percent, 8);
+        });
+        it('does not change candles', () => {
+            assert.deepEqual(arr, clone);
         });
     });
 });
