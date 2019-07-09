@@ -2,7 +2,7 @@ const {
     Chart,
     Candle
 } = require('../GdaxAssistant');
-const TestData = require('../../gdax-sim-test-data');
+const TestData = require('gdax-sim-test-data');
 const TestReturnedData = TestData.gdaxOutput.fifteenOneMinutes;
 const assert = require('assert');
 

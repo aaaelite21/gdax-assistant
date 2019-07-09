@@ -10,7 +10,7 @@ const {
     Percentile
 } = GdaxAssistant.Indicators;
 const assert = require('assert');
-const TestData = require('../../gdax-sim-test-data');
+const TestData = require('gdax-sim-test-data');
 const TestTimeFrame = TestData.candles.oneHour.slice().reverse();
 describe('#Indicators', () => {
     describe('#Sma', () => {
