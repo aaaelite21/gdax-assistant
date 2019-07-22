@@ -54,6 +54,12 @@ describe('#Candle', () => {
         it('has the proper height', () => {
             assert.equal(c.range, testCandle[2] - testCandle[1]);
         });
+        it('has the proper head', () => {
+            assert.equal(c.head, testCandle[2] - Math.max(testCandle[3], testCandle[4]));
+        });
+        it('has the proper tail', () => {
+            assert.equal(c.tail, Math.min(testCandle[3], testCandle[4]) - testCandle[1]);
+        });
     });
 
     describe("#toCsv", () => {
