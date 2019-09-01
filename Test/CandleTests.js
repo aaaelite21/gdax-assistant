@@ -60,6 +60,9 @@ describe('#Candle', () => {
         it('has the proper tail', () => {
             assert.equal(c.tail, Math.min(testCandle[3], testCandle[4]) - testCandle[1]);
         });
+        it('has the proper body', () => {
+            assert.equal(c.body, Math.max(c.close, c.open) - Math.min(c.close, c.open));
+        });
     });
 
     describe("#toCsv", () => {

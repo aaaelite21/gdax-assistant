@@ -14,6 +14,7 @@ class Candle {
         this.red = this.close < this.open;
         this.head = this.high - Math.max(this.close, this.open);
         this.tail = Math.min(this.open, this.close) - this.low;
+        this.body = Math.max(this.close, this.open) - Math.min(this.close, this.open);;
     }
 
     toArray() {
