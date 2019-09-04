@@ -178,7 +178,100 @@ function Percentile(candles, lhoc, percentile) {
     return arr[index];
 }
 
+/**
+ *
+ * @param {Array} candles
+ * @param {Number} length
+ */
+function Adx(candles, length) {
+
+    //get the atr
+    let adx = 0;
+    let atr = SmoothedAtr(candles, length);
+    let pDi = 100 * SmoothedPositiveMovemnet(candles, length) / atr;
+    let nDi = 100 * SmoothedNegativeMovemnet(candles, length) / atr;
+    let dx = 100 * Math.abs(pDi - nDi) / Math.abs(pDi + nDi);
+    if (candles.length > length) {
+        //keep it accurate as we reach the end
+        let N = Math.min(length, candles.length);
+        //get the previous value
+        let prime = Adx(candles.slice(1), length).adx;
+        adx = ((N - 1) * prime + dx) / N;
+    } else {
+        //base case
+        adx = dx;
+    }
+
+    return {
+        adx: adx,
+        pDi: pDi,
+        nDi: nDi
+    };
+
+}
+
+function SmoothedPositiveMovemnet(candles, length) {
+    let ret = null;
+
+    //get the current dm (eazy)
+    let down_move = candles[1].low - candles[0].low;
+    let up_move = candles[0].high - candles[1].high;
+    let cdm = 0;
+    if (up_move > down_move && up_move > 0) cdm = up_move;
+
+
+    if (candles.length > 2) {
+        //keep it accurate as we reach the end
+        let N = Math.min(length, candles.length);
+        //get the previous value
+        let prime = SmoothedPositiveMovemnet(candles.slice(1), length);
+        ret = ((N - 1) * prime + cdm) / N;
+    } else {
+        //base case
+        ret = cdm;
+    }
+
+    //Yo no me gusta multiple return values
+    return ret;
+}
+
+function SmoothedNegativeMovemnet(candles, length) {
+    let ret = null;
+
+    //get the current dm (eazy)
+    let down_move = candles[1].low - candles[0].low;
+    let up_move = candles[0].high - candles[1].high;
+    let cdm = 0;
+    if (down_move > up_move && down_move > 0) cdm = down_move;
+
+    if (candles.length > 2) {
+        //keep it accurate as we reach the end
+        let N = Math.min(length, candles.length);
+        //get the previous value
+        let prime = SmoothedNegativeMovemnet(candles.slice(1), length);
+        ret = ((N - 1) * prime + ret) / N;
+    } else {
+        //base case
+        ret = cdm;
+    }
+
+    //Yo no me gusta multiple return values
+    return ret;
+}
+
+function SmoothedAtr(candles, length) {
+    let ret = Atr(candles.slice(0, length));
+    if (candles.length > length) {
+        let N = Math.min(length, candles.length);
+        let prime = SmoothedAtr(candles.slice(1), length);
+        ret = ((N - 1) * prime + ret) / N;
+    }
+
+    return ret;
+}
+
 module.exports = {
+    Adx: Adx,
     Atr: Atr,
     Aroon: Aroon,
     Highest: Highest,
