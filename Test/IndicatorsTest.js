@@ -1,5 +1,6 @@
 const GdaxAssistant = require('../GdaxAssistant');
 const {
+    Adx,
     Sma,
     Atr,
     Highest,
@@ -55,6 +56,7 @@ describe('#Indicators', () => {
             assert.equal(aroon.oscillator.toFixed(2), 55.00);
         });
     });
+
     describe('#Percentile', () => {
         let arr = [{
             close: 8

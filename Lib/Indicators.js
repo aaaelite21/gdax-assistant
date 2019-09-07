@@ -1,30 +1,34 @@
 function Sma(candles, lhoc) {
     let sum = 0;
-    lhoc = lhoc === undefined ? 'close' : lhoc;
+    lhoc = lhoc === undefined ? "close" : lhoc;
     for (let i = 0; i < candles.length; i++) {
         sum += candles[i][lhoc];
     }
     return sum / candles.length;
-};
+}
 
 function Atr(candles) {
-    return (candles.map((candle) => {
-        return Math.abs(candle.open - candle.close);
-    }).reduce(getSum) / candles.length);
-};
+    return (
+        candles
+        .map(candle => {
+            return Math.abs(candle.open - candle.close);
+        })
+        .reduce(getSum) / candles.length
+    );
+}
 
 function Highest(candles, lhoc) {
-    lhoc = lhoc === undefined ? 'close' : lhoc;
-    let points = candles.map((candle) => {
+    lhoc = lhoc === undefined ? "close" : lhoc;
+    let points = candles.map(candle => {
         return candle[lhoc];
     });
 
     return max(points);
-};
+}
 
 function IndexOfHighest(candles, lhoc) {
-    lhoc = lhoc === undefined ? 'close' : lhoc;
-    let points = candles.map((candle) => {
+    lhoc = lhoc === undefined ? "close" : lhoc;
+    let points = candles.map(candle => {
         return candle[lhoc];
     });
     let indexOfMax = -1;
@@ -37,20 +41,20 @@ function IndexOfHighest(candles, lhoc) {
     });
 
     return indexOfMax;
-};
+}
 
 function Lowest(candles, lhoc) {
-    lhoc = lhoc === undefined ? 'close' : lhoc;
-    let points = candles.map((candle) => {
+    lhoc = lhoc === undefined ? "close" : lhoc;
+    let points = candles.map(candle => {
         return candle[lhoc];
     });
 
     return min(points);
-};
+}
 
 function IndexOfLowest(candles, lhoc) {
-    lhoc = lhoc === undefined ? 'close' : lhoc;
-    let points = candles.map((candle) => {
+    lhoc = lhoc === undefined ? "close" : lhoc;
+    let points = candles.map(candle => {
         return candle[lhoc];
     });
     let indexOfMin = -1;
@@ -62,44 +66,48 @@ function IndexOfLowest(candles, lhoc) {
         }
     });
     return indexOfMin;
-};
+}
 
 function Aroon(candles) {
-    let up = 100 * (candles.length - IndexOfHighest(candles, 'high')) / candles.length;
-    let down = 100 * (candles.length - IndexOfLowest(candles, 'low')) / candles.length
-    let oscillator = up - down
+    let up =
+        (100 * (candles.length - IndexOfHighest(candles, "high"))) / candles.length;
+    let down =
+        (100 * (candles.length - IndexOfLowest(candles, "low"))) / candles.length;
+    let oscillator = up - down;
     return {
         up: up,
         down: down,
         oscillator: oscillator
-    }
-};
+    };
+}
 
 function Vwap(candles) {
     let sum = 0;
     let totalVolume = 0;
     for (let i = 0; i < candles.length; i++) {
-        sum += ((candles[i].high + candles[i].low + candles[i].close) / 3) * candles[i].volume;
+        sum +=
+            ((candles[i].high + candles[i].low + candles[i].close) / 3) *
+            candles[i].volume;
         totalVolume += candles[i].volume;
     }
     return sum / totalVolume;
 }
 
 function Rms(candles, lhoc) {
-    lhoc = lhoc === undefined ? 'close' : lhoc;
+    lhoc = lhoc === undefined ? "close" : lhoc;
     let mean = 0,
         squaredMean = 0;
-    let points = candles.map((candle) => {
+    let points = candles.map(candle => {
         return candle[lhoc];
     });
 
-    points.forEach((value) => {
+    points.forEach(value => {
         mean += value;
     });
 
     mean /= points.length;
 
-    points.forEach((value) => {
+    points.forEach(value => {
         squaredMean += Math.pow(value - mean, 2);
     });
 
@@ -108,19 +116,35 @@ function Rms(candles, lhoc) {
     return Math.sqrt(squaredMean);
 }
 
-function Ichimoku(candles, tenkanLength, kijunLength, periodLength, clouOffset) {
-    let tenkansen = (Highest(candles.slice(0, tenkanLength), 'high') +
-        Lowest(candles.slice(0, tenkanLength), 'low')) / 2;
-    let kijunsen = (Highest(candles.slice(0, kijunLength), 'high') +
-        Lowest(candles.slice(0, kijunLength), 'low')) / 2;
+function Ichimoku(
+    candles,
+    tenkanLength,
+    kijunLength,
+    periodLength,
+    clouOffset
+) {
+    let tenkansen =
+        (Highest(candles.slice(0, tenkanLength), "high") +
+            Lowest(candles.slice(0, tenkanLength), "low")) /
+        2;
+    let kijunsen =
+        (Highest(candles.slice(0, kijunLength), "high") +
+            Lowest(candles.slice(0, kijunLength), "low")) /
+        2;
 
-    let senkouSpanB = (Highest(candles.slice(clouOffset, clouOffset + periodLength), 'high') +
-        Lowest(candles.slice(clouOffset, clouOffset + periodLength), 'low')) / 2;
+    let senkouSpanB =
+        (Highest(candles.slice(clouOffset, clouOffset + periodLength), "high") +
+            Lowest(candles.slice(clouOffset, clouOffset + periodLength), "low")) /
+        2;
 
-    let oldTenkansen = (Highest(candles.slice(clouOffset, clouOffset + tenkanLength), 'high') +
-        Lowest(candles.slice(clouOffset, clouOffset + tenkanLength), 'low')) / 2;
-    let oldKijunsen = (Highest(candles.slice(clouOffset, clouOffset + kijunLength), 'high') +
-        Lowest(candles.slice(clouOffset, clouOffset + kijunLength), 'low')) / 2;
+    let oldTenkansen =
+        (Highest(candles.slice(clouOffset, clouOffset + tenkanLength), "high") +
+            Lowest(candles.slice(clouOffset, clouOffset + tenkanLength), "low")) /
+        2;
+    let oldKijunsen =
+        (Highest(candles.slice(clouOffset, clouOffset + kijunLength), "high") +
+            Lowest(candles.slice(clouOffset, clouOffset + kijunLength), "low")) /
+        2;
     let senkouSpanA = (oldTenkansen + oldKijunsen) / 2;
 
     return {
@@ -134,15 +158,17 @@ function Ichimoku(candles, tenkanLength, kijunLength, periodLength, clouOffset) 
         ktCross: kijunsen > tenkansen,
         kijunsen: kijunsen,
         tenkansen: tenkansen
-    }
+    };
 }
 
 function Rsi(candles, lhoc) {
     let length = candles.length;
-    lhoc = lhoc === undefined ? 'close' : lhoc;
-    let points = candles.map((value) => {
-        return value[lhoc];
-    }).reverse();
+    lhoc = lhoc === undefined ? "close" : lhoc;
+    let points = candles
+        .map(value => {
+            return value[lhoc];
+        })
+        .reverse();
 
     let sumGains = 0,
         countGains = 0,
@@ -163,13 +189,13 @@ function Rsi(candles, lhoc) {
     if (countGains === 0) return 0;
     if (countLosses === 0) return 100;
 
-    let rs = (sumGains / length) / (sumLoss / length);
+    let rs = sumGains / length / (sumLoss / length);
 
-    return 100 - (100 / (1 + rs));
+    return 100 - 100 / (1 + rs);
 }
 
 function Percentile(candles, lhoc, percentile) {
-    let arr = candles.map((candle) => {
+    let arr = candles.map(candle => {
         return candle[lhoc];
     });
     arr.sort();
@@ -178,7 +204,100 @@ function Percentile(candles, lhoc, percentile) {
     return arr[index];
 }
 
+/**
+ *
+ * @param {Array} candles
+ * @param {Number} length
+ */
+function Adx(candles, length) {
+    //get the atr
+    let adx = 0;
+    let atr = SmoothedAtr(candles, length);
+    let pDi = (100 * SmoothedPositiveMovemnet(candles, length)) / atr;
+    let nDi = (100 * SmoothedNegativeMovemnet(candles, length)) / atr;
+    let sum = Math.abs(pDi + nDi);
+    let dx = Math.abs(pDi - nDi) / (sum === 0 ? 1 : sum);
+
+    if (candles.length > length) {
+        //keep it accurate as we reach the end
+        let N = length;
+        //get the previous value
+        let prime = Adx(candles.slice(1), length).dx;
+        dx = ((N - 1) * prime + dx) / N;
+    }
+
+    adx = dx * 100;
+    return {
+        adx: adx,
+        pDi: pDi,
+        nDi: nDi,
+        dx: dx
+    };
+}
+
+function SmoothedPositiveMovemnet(candles, length) {
+    let ret = null;
+
+    //get the current dm (eazy)
+    let up_move = candles[0].high - candles[1].high;
+    let down_move = candles[1].low - candles[0].low;
+    let cdm = 0;
+    if (up_move > down_move && up_move > 0) cdm = up_move;
+
+    if (candles.length > length) {
+        //keep it accurate as we reach the end
+        let N = length;
+        //get the previous value
+        let prime = SmoothedPositiveMovemnet(candles.slice(1), length);
+        ret = ((N - 1) * prime + cdm) / N;
+    } else {
+        //base case
+        ret = cdm;
+    }
+
+    //Yo no me gusta multiple return values
+    return ret;
+}
+
+function SmoothedNegativeMovemnet(candles, length) {
+    let ret = null;
+
+    //get the current dm (eazy)
+    let up_move = candles[0].high - candles[1].high;
+    let down_move = candles[1].low - candles[0].low;
+
+    let cdm = 0;
+    if (down_move > up_move && down_move > 0) cdm = down_move;
+
+    if (candles.length > length) {
+        //keep it accurate as we reach the end
+        let N = length;
+        //get the previous value
+        let prime = SmoothedNegativeMovemnet(candles.slice(1), length);
+        ret = ((N - 1) * prime + cdm) / N;
+    } else {
+        //base case
+        ret = cdm;
+    }
+
+    //Yo no me gusta multiple return values
+    return ret;
+}
+
+function SmoothedAtr(candles, length) {
+    let c = candles[0];
+    let ret = c.tr;
+    if (candles.length > length) {
+        let N = length;
+        let prime = SmoothedAtr(candles.slice(1), length);
+        ret = ((N - 1) * prime + ret) / N;
+    }
+
+    return ret;
+}
+
 module.exports = {
+    Adx: Adx,
     Atr: Atr,
     Aroon: Aroon,
     Highest: Highest,
@@ -191,7 +310,7 @@ module.exports = {
     Sma: Sma,
     Vwap: Vwap,
     Percentile: Percentile
-}
+};
 
 function getSum(total, num) {
     return total + num;
