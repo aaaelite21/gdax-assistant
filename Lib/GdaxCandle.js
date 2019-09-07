@@ -1,6 +1,6 @@
 //LHOCV
 class Candle {
-    constructor(SingleGdaxCandleArray) {
+    constructor(SingleGdaxCandleArray, previousGdaxCandleArray) {
         this.time = SingleGdaxCandleArray[0] * 1000;
         this.low = SingleGdaxCandleArray[1];
         this.high = SingleGdaxCandleArray[2];
@@ -14,7 +14,14 @@ class Candle {
         this.red = this.close < this.open;
         this.head = this.high - Math.max(this.close, this.open);
         this.tail = Math.min(this.open, this.close) - this.low;
-        this.body = Math.max(this.close, this.open) - Math.min(this.close, this.open);;
+        this.body = Math.max(this.close, this.open) - Math.min(this.close, this.open);
+        if (previousGdaxCandleArray !== undefined) {
+            this.tr = Math.max(
+                this.high - this.low,
+                Math.abs(this.high - previousGdaxCandleArray[4]),
+                Math.abs(this.low - previousGdaxCandleArray[4])
+            );
+        }
     }
 
     toArray() {

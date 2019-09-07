@@ -5,9 +5,20 @@ class GdaxChart {
         //most recent is 0
         this.candles = [];
         for (let i = 0; i < RawCandleData.length; i++) {
-            let c = new Candle(RawCandleData[i]);
+            let c;
+            if (i < RawCandleData.length - 1)
+                c = new Candle(RawCandleData[i], RawCandleData[i + 1]);
+            else
+                c = new Candle(RawCandleData[i]);
+
             this.candles.push(c);
         }
+    }
+
+    Adx(length, offset) {
+        let ofs = offset === undefined ? 0 : Math.abs(ofs);
+        let targetTimeFrame = this.candles.slice(ofs, this.candles.length);
+        return Indicators.Adx(targetTimeFrame, length);
     }
 
     Aroon(length, offset) {

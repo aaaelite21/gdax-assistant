@@ -57,15 +57,6 @@ describe('#Indicators', () => {
         });
     });
 
-    describe('#Adx', () => {
-        it('has no value above 100', () => {
-            let a = Adx(TestTimeFrame, 10);
-            assert(a.pDi <= 100);
-            assert(a.nDi <= 100);
-            assert(a.adx <= 100);
-        });
-    });
-
     describe('#Percentile', () => {
         let arr = [{
             close: 8
