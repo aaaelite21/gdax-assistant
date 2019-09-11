@@ -209,20 +209,20 @@ function Percentile(candles, lhoc, percentile) {
  * @param {Array} candles
  * @param {Number} length
  */
-function Adx(candles, length) {
+function Adx(candles, length, look_back) {
     //get the atr
     let adx = 0;
-    let atr = SmoothedAtr(candles, length);
-    let pDi = (100 * SmoothedPositiveMovemnet(candles, length)) / atr;
-    let nDi = (100 * SmoothedNegativeMovemnet(candles, length)) / atr;
+    let atr = SmoothedAtr(candles, length, look_back);
+    let pDi = (100 * SmoothedPositiveMovemnet(candles, length, look_back)) / atr;
+    let nDi = (100 * SmoothedNegativeMovemnet(candles, length, look_back)) / atr;
     let sum = Math.abs(pDi + nDi);
     let dx = Math.abs(pDi - nDi) / (sum === 0 ? 1 : sum);
 
-    if (candles.length > length) {
+    if (candles.length > length && look_back > 0) {
         //keep it accurate as we reach the end
         let N = length;
         //get the previous value
-        let prime = Adx(candles.slice(1), length).dx;
+        let prime = Adx(candles.slice(1), length, look_back - 1).dx;
         dx = ((N - 1) * prime + dx) / N;
     }
 
@@ -235,7 +235,7 @@ function Adx(candles, length) {
     };
 }
 
-function SmoothedPositiveMovemnet(candles, length) {
+function SmoothedPositiveMovemnet(candles, length, look_back) {
     let ret = null;
 
     //get the current dm (eazy)
@@ -244,11 +244,11 @@ function SmoothedPositiveMovemnet(candles, length) {
     let cdm = 0;
     if (up_move > down_move && up_move > 0) cdm = up_move;
 
-    if (candles.length > length) {
+    if (candles.length > length && look_back > 0) {
         //keep it accurate as we reach the end
         let N = length;
         //get the previous value
-        let prime = SmoothedPositiveMovemnet(candles.slice(1), length);
+        let prime = SmoothedPositiveMovemnet(candles.slice(1), length, look_back - 1);
         ret = ((N - 1) * prime + cdm) / N;
     } else {
         //base case
@@ -259,7 +259,7 @@ function SmoothedPositiveMovemnet(candles, length) {
     return ret;
 }
 
-function SmoothedNegativeMovemnet(candles, length) {
+function SmoothedNegativeMovemnet(candles, length, look_back) {
     let ret = null;
 
     //get the current dm (eazy)
@@ -269,11 +269,11 @@ function SmoothedNegativeMovemnet(candles, length) {
     let cdm = 0;
     if (down_move > up_move && down_move > 0) cdm = down_move;
 
-    if (candles.length > length) {
+    if (candles.length > length && look_back > 0) {
         //keep it accurate as we reach the end
         let N = length;
         //get the previous value
-        let prime = SmoothedNegativeMovemnet(candles.slice(1), length);
+        let prime = SmoothedNegativeMovemnet(candles.slice(1), length, look_back - 1);
         ret = ((N - 1) * prime + cdm) / N;
     } else {
         //base case
@@ -284,12 +284,12 @@ function SmoothedNegativeMovemnet(candles, length) {
     return ret;
 }
 
-function SmoothedAtr(candles, length) {
+function SmoothedAtr(candles, length, look_back) {
     let c = candles[0];
     let ret = c.tr;
-    if (candles.length > length) {
+    if (candles.length > length && look_back > 0) {
         let N = length;
-        let prime = SmoothedAtr(candles.slice(1), length);
+        let prime = SmoothedAtr(candles.slice(1), length, look_back - 1);
         ret = ((N - 1) * prime + ret) / N;
     }
 
