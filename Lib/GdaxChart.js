@@ -1,93 +1,108 @@
-const Candle = require('./GdaxCandle');
-const Indicators = require('./Indicators');
+const Candle = require("./GdaxCandle");
+const Indicators = require("./Indicators");
 class GdaxChart {
-    constructor(RawCandleData) {
-        //most recent is 0
-        this.candles = [];
-        for (let i = 0; i < RawCandleData.length; i++) {
-            let c;
-            if (i < RawCandleData.length - 1)
-                c = new Candle(RawCandleData[i], RawCandleData[i + 1]);
-            else
-                c = new Candle(RawCandleData[i]);
+  constructor(RawCandleData) {
+    //most recent is 0
+    this.candles = [];
+    for (let i = 0; i < RawCandleData.length; i++) {
 
-            this.candles.push(c);
-        }
+      let c;
+
+      if (i < RawCandleData.length - 1)
+        c = new Candle(RawCandleData[i], RawCandleData[i + 1]);
+      else
+        c = new Candle(RawCandleData[i]);
+
+      this.candles.push(c);
     }
+  }
 
-    Adx(length, offset) {
-        let ofs = offset === undefined ? 0 : Math.abs(ofs);
-        let targetTimeFrame = this.candles.slice(ofs, this.candles.length);
-        return Indicators.Adx(targetTimeFrame, length);
-    }
+  Adx(length, look_back, offset) {
+    let lb = look_back === undefined ? Infinity : look_back;
+    let ofs = offset === undefined ? 0 : Math.abs(ofs);
+    let targetTimeFrame = this.candles.slice(ofs, this.candles.length);
+    return Indicators.Adx(targetTimeFrame, length, lb);
+  }
 
-    Aroon(length, offset) {
-        let targetTimeFrame = this.PreProcess(length, offset);
-        return Indicators.Aroon(targetTimeFrame)
-    }
+  Dmi(length, look_back, offset) {
+    return this.Adx(length, look_back, offset);
+  }
 
-    Atr(length, offset) {
-        let targetTimeFrame = this.PreProcess(length, offset);
-        return Indicators.Atr(targetTimeFrame);
-    }
+  Aroon(length, offset) {
+    let targetTimeFrame = this.PreProcess(length, offset);
+    return Indicators.Aroon(targetTimeFrame);
+  }
 
-    Highest(length, offset, lhoc) {
-        let targetTimeFrame = this.PreProcess(length, offset);
-        return Indicators.Highest(targetTimeFrame, lhoc);
-    }
+  Atr(length, offset) {
+    let targetTimeFrame = this.PreProcess(length, offset);
+    return Indicators.Atr(targetTimeFrame);
+  }
 
-    Ichimoku(tenkanLength, kijunLength, periodLength, clouOffset) {
-        let targetTimeFrame = this.PreProcess(Math.max(periodLength + clouOffset), 0);
-        return Indicators.Ichimoku(targetTimeFrame, tenkanLength, kijunLength, periodLength, clouOffset)
-    }
+  Highest(length, offset, lhoc) {
+    let targetTimeFrame = this.PreProcess(length, offset);
+    return Indicators.Highest(targetTimeFrame, lhoc);
+  }
 
-    IndexOfHighest(length, offset, lhoc) {
-        let targetTimeFrame = this.PreProcess(length, offset);
-        return Indicators.IndexOfHighest(targetTimeFrame, lhoc);
-    }
+  Ichimoku(tenkanLength, kijunLength, periodLength, clouOffset) {
+    let targetTimeFrame = this.PreProcess(
+      Math.max(periodLength + clouOffset),
+      0
+    );
+    return Indicators.Ichimoku(
+      targetTimeFrame,
+      tenkanLength,
+      kijunLength,
+      periodLength,
+      clouOffset
+    );
+  }
 
-    IndexOfLowest(length, offset, lhoc) {
-        let targetTimeFrame = this.PreProcess(length, offset);
-        return Indicators.IndexOfLowest(targetTimeFrame, lhoc);
-    }
+  IndexOfHighest(length, offset, lhoc) {
+    let targetTimeFrame = this.PreProcess(length, offset);
+    return Indicators.IndexOfHighest(targetTimeFrame, lhoc);
+  }
 
-    Lowest(length, offset, lhoc) {
-        let targetTimeFrame = this.PreProcess(length, offset);
-        return Indicators.Lowest(targetTimeFrame, lhoc);
-    }
+  IndexOfLowest(length, offset, lhoc) {
+    let targetTimeFrame = this.PreProcess(length, offset);
+    return Indicators.IndexOfLowest(targetTimeFrame, lhoc);
+  }
 
-    Percentile(length, percentile, offset, lhoc) {
-        let targetTimeFrame = this.PreProcess(length, offset);
-        return Indicators.Percentile(targetTimeFrame, lhoc, percentile);
-    }
+  Lowest(length, offset, lhoc) {
+    let targetTimeFrame = this.PreProcess(length, offset);
+    return Indicators.Lowest(targetTimeFrame, lhoc);
+  }
 
-    Rsi(length, offset, lhoc) {
-        let targetTimeFrame = this.PreProcess(length, offset);
-        return Indicators.Rsi(targetTimeFrame, lhoc);
+  Percentile(length, percentile, offset, lhoc) {
+    let targetTimeFrame = this.PreProcess(length, offset);
+    return Indicators.Percentile(targetTimeFrame, lhoc, percentile);
+  }
 
-    }
+  Rsi(length, offset, lhoc) {
+    let targetTimeFrame = this.PreProcess(length, offset);
+    return Indicators.Rsi(targetTimeFrame, lhoc);
+  }
 
-    Rms(length, offset, lhoc) {
-        let targetTimeFrame = this.PreProcess(length, offset);
-        return Indicators.Rms(targetTimeFrame, lhoc);
-    }
+  Rms(length, offset, lhoc) {
+    let targetTimeFrame = this.PreProcess(length, offset);
+    return Indicators.Rms(targetTimeFrame, lhoc);
+  }
 
-    Sma(length, offset, lhoc) {
-        let targetTimeFrame = this.PreProcess(length, offset);
-        return Indicators.Sma(targetTimeFrame, lhoc);
-    }
+  Sma(length, offset, lhoc) {
+    let targetTimeFrame = this.PreProcess(length, offset);
+    return Indicators.Sma(targetTimeFrame, lhoc);
+  }
 
-    Vwap(length, offset) {
-        let targetTimeFrame = this.PreProcess(length, offset);
-        return Indicators.Vwap(targetTimeFrame)
-    }
+  Vwap(length, offset) {
+    let targetTimeFrame = this.PreProcess(length, offset);
+    return Indicators.Vwap(targetTimeFrame);
+  }
 
-    PreProcess(length, ofs) {
-        if (length > this.candles.length) throw "Not enough candles";
-        let offset = ofs === undefined ? 0 : Math.abs(ofs);
-        let targetTimeFrame = this.candles.slice(offset, offset + length);
-        return targetTimeFrame;
-    }
+  PreProcess(length, ofs) {
+    if (length > this.candles.length) throw "Not enough candles";
+    let offset = ofs === undefined ? 0 : Math.abs(ofs);
+    let targetTimeFrame = this.candles.slice(offset, offset + length);
+    return targetTimeFrame;
+  }
 }
 
 module.exports = GdaxChart;
