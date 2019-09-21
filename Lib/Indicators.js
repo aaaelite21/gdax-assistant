@@ -161,37 +161,56 @@ function Ichimoku(
     };
 }
 
-function Rsi(candles, lhoc) {
-    let length = candles.length;
-    lhoc = lhoc === undefined ? "close" : lhoc;
-    let points = candles
-        .map(value => {
-            return value[lhoc];
-        })
-        .reverse();
+function Rsi(candles, length, look_back) {
+    let {
+        avg_gains,
+        avg_losses
+    } = SmoothedAverageLossAndGains(candles, length, look_back);
 
-    let sumGains = 0,
-        countGains = 0,
-        countLosses = 0,
-        sumLoss = 0;
+    if (avg_gains === 0) {
+        return 0;
+    }
+    if (avg_losses === 0) {
+        return 100;
+    } else {
+        let rs = avg_gains / avg_losses;
+        return 100 - 100 / (1 + rs);
+    }
+}
 
-    for (let i = 1; i < points.length; i++) {
-        let diff = points[i] - points[i - 1];
-        if (diff >= 0) {
-            sumGains += diff;
-            countGains++;
-        } else {
-            sumLoss -= diff;
-            countLosses++;
-        }
+function SmoothedAverageLossAndGains(candles, length, look_back) {
+    let current = candles[0].close - candles[1].close
+    let ret = {
+        avg_gains: current > 0 ? current : 0,
+        avg_losses: current < 0 ? -1 * current : 0
     }
 
-    if (countGains === 0) return 0;
-    if (countLosses === 0) return 100;
+    //keep it accurate as we reach the end
+    let N = length;
+    if (candles.length > length && look_back > 0) {
 
-    let rs = sumGains / length / (sumLoss / length);
+        //get the previous value
+        let prime = SmoothedAverageLossAndGains(candles.slice(1), length, look_back - 1);
+        ret.avg_gains = ((N - 1) * prime.avg_gains + ret.avg_gains) / N;
+        ret.avg_losses = ((N - 1) * prime.avg_losses + ret.avg_losses) / N;
+    } else {
+        let sumGains = 0,
+            sumLoss = 0;
 
-    return 100 - 100 / (1 + rs);
+        for (let i = 0; i < length - 1; i++) {
+            let diff = candles[i].close - candles[i + 1].close;
+            if (diff > 0) {
+                sumGains += diff;
+            } else {
+                sumLoss -= diff;
+            }
+        }
+
+        ret.avg_gains = sumGains / N;
+        ret.avg_losses = sumLoss / N;
+    }
+
+    return ret;
 }
 
 function Percentile(candles, lhoc, percentile) {
