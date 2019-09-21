@@ -19,7 +19,7 @@ class GdaxChart {
 
   Adx(length, look_back, offset) {
     let lb = look_back === undefined ? Infinity : look_back;
-    let ofs = offset === undefined ? 0 : Math.abs(ofs);
+    let ofs = offset === undefined ? 0 : Math.abs(offset);
     let targetTimeFrame = this.candles.slice(ofs, this.candles.length);
     return Indicators.Adx(targetTimeFrame, length, lb);
   }
@@ -77,9 +77,11 @@ class GdaxChart {
     return Indicators.Percentile(targetTimeFrame, lhoc, percentile);
   }
 
-  Rsi(length, offset, lhoc) {
-    let targetTimeFrame = this.PreProcess(length, offset);
-    return Indicators.Rsi(targetTimeFrame, lhoc);
+  Rsi(length, look_back, offset) {
+    let lb = look_back === undefined ? Infinity : look_back;
+    let ofs = offset === undefined ? 0 : Math.abs(offset);
+    let targetTimeFrame = this.candles.slice(ofs, this.candles.length);
+    return Indicators.Rsi(targetTimeFrame, length, lb);
   }
 
   Rms(length, offset, lhoc) {
