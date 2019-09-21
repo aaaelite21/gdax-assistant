@@ -195,6 +195,7 @@ function Rsi(candles, lhoc) {
 }
 
 function Percentile(candles, lhoc, percentile) {
+    lhoc = lhoc === undefined ? "close" : lhoc;
     let arr = candles.map(candle => {
         return candle[lhoc];
     });
