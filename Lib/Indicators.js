@@ -178,41 +178,6 @@ function Rsi(candles, length, look_back) {
     }
 }
 
-function SmoothedAverageLossAndGains(candles, length, look_back) {
-    let current = candles[0].close - candles[1].close
-    let ret = {
-        avg_gains: current > 0 ? current : 0,
-        avg_losses: current < 0 ? -1 * current : 0
-    }
-
-    //keep it accurate as we reach the end
-    let N = length;
-    if (candles.length > length && look_back > 0) {
-
-        //get the previous value
-        let prime = SmoothedAverageLossAndGains(candles.slice(1), length, look_back - 1);
-        ret.avg_gains = ((N - 1) * prime.avg_gains + ret.avg_gains) / N;
-        ret.avg_losses = ((N - 1) * prime.avg_losses + ret.avg_losses) / N;
-    } else {
-        let sumGains = 0,
-            sumLoss = 0;
-
-        for (let i = 0; i < length - 1; i++) {
-            let diff = candles[i].close - candles[i + 1].close;
-            if (diff > 0) {
-                sumGains += diff;
-            } else {
-                sumLoss -= diff;
-            }
-        }
-
-        ret.avg_gains = sumGains / N;
-        ret.avg_losses = sumLoss / N;
-    }
-
-    return ret;
-}
-
 function Percentile(candles, lhoc, percentile) {
     lhoc = lhoc === undefined ? "close" : lhoc;
     let arr = candles.map(candle => {
@@ -253,6 +218,102 @@ function Adx(candles, length, look_back) {
         nDi: nDi,
         dx: dx
     };
+}
+
+function Ema(candles, length, look_back, lhoc) {
+    lhoc = lhoc === undefined ? "close" : lhoc;
+    let ret = 0;
+
+    if (candles.length > length && look_back > 0) {
+        //keep it accurate as we reach the end
+        let N = length;
+        let k = 2 / (N + 1);
+        let price = candles[0][lhoc];
+        //get the previous value
+        let prime = Ema(candles.slice(1), length, look_back - 1);
+        ret = k * (price - prime) + prime;
+    } else {
+        ret = Sma(candles.slice(0, length), lhoc);
+    }
+
+    return ret;
+}
+
+
+module.exports = {
+    Adx: Adx,
+    Atr: Atr,
+    Aroon: Aroon,
+    Ema: Ema,
+    Highest: Highest,
+    Ichimoku: Ichimoku,
+    IndexOfHighest: IndexOfHighest,
+    IndexOfLowest: IndexOfLowest,
+    Lowest: Lowest,
+    Rms: Rms,
+    Rsi: Rsi,
+    Sma: Sma,
+    Vwap: Vwap,
+    Percentile: Percentile
+};
+
+function getSum(total, num) {
+    return total + num;
+}
+
+function max(array) {
+    let max = -Infinity;
+    array.forEach(element => {
+        if (element > max) {
+            max = element;
+        }
+    });
+    return max;
+}
+
+function min(array) {
+    let min = Infinity;
+    array.forEach(element => {
+        if (element < min) {
+            min = element;
+        }
+    });
+    return min;
+}
+
+function SmoothedAverageLossAndGains(candles, length, look_back) {
+    let current = candles[0].close - candles[1].close
+    let ret = {
+        avg_gains: current > 0 ? current : 0,
+        avg_losses: current < 0 ? -1 * current : 0
+    }
+
+    //keep it accurate as we reach the end
+    let N = length;
+    if (candles.length > length && look_back > 0) {
+
+        //get the previous value
+        let prime = SmoothedAverageLossAndGains(candles.slice(1), length, look_back - 1);
+        ret.avg_gains = ((N - 1) * prime.avg_gains + ret.avg_gains) / N;
+        ret.avg_losses = ((N - 1) * prime.avg_losses + ret.avg_losses) / N;
+    } else {
+        let sumGains = 0,
+            sumLoss = 0;
+
+        for (let i = 0; i < length - 1; i++) {
+            let diff = candles[i].close - candles[i + 1].close;
+            if (diff > 0) {
+                sumGains += diff;
+            } else {
+                sumLoss -= diff;
+            }
+        }
+
+        ret.avg_gains = sumGains / N;
+        ret.avg_losses = sumLoss / N;
+    }
+
+    return ret;
 }
 
 function SmoothedPositiveMovemnet(candles, length, look_back) {
@@ -314,44 +375,4 @@ function SmoothedAtr(candles, length, look_back) {
     }
 
     return ret;
-}
-
-module.exports = {
-    Adx: Adx,
-    Atr: Atr,
-    Aroon: Aroon,
-    Highest: Highest,
-    Ichimoku: Ichimoku,
-    IndexOfHighest: IndexOfHighest,
-    IndexOfLowest: IndexOfLowest,
-    Lowest: Lowest,
-    Rms: Rms,
-    Rsi: Rsi,
-    Sma: Sma,
-    Vwap: Vwap,
-    Percentile: Percentile
-};
-
-function getSum(total, num) {
-    return total + num;
-}
-
-function max(array) {
-    let max = -Infinity;
-    array.forEach(element => {
-        if (element > max) {
-            max = element;
-        }
-    });
-    return max;
-}
-
-function min(array) {
-    let min = Infinity;
-    array.forEach(element => {
-        if (element < min) {
-            min = element;
-        }
-    });
-    return min;
 }

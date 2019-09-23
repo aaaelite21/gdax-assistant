@@ -38,6 +38,13 @@ class GdaxChart {
     return Indicators.Atr(targetTimeFrame);
   }
 
+  Ema(length, look_back, offset, lhoc) {
+    let lb = look_back === undefined ? Infinity : look_back;
+    let ofs = offset === undefined ? 0 : Math.abs(offset);
+    let targetTimeFrame = this.candles.slice(ofs, this.candles.length);
+    return Indicators.Ema(targetTimeFrame, length, lb, lhoc);
+  }
+
   Highest(length, offset, lhoc) {
     let targetTimeFrame = this.PreProcess(length, offset);
     return Indicators.Highest(targetTimeFrame, lhoc);
