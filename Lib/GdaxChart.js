@@ -37,6 +37,10 @@ class GdaxChart {
     let targetTimeFrame = this.PreProcess(length, offset);
     return Indicators.Atr(targetTimeFrame);
   }
+  BollingerBands(length, stdv, offset, lhoc) {
+    let targetTimeFrame = this.PreProcess(length, offset);
+    return Indicators.BollingerBands(targetTimeFrame, stdv, lhoc);
+  }
 
   Ema(length, look_back, offset, lhoc) {
     let lb = look_back === undefined ? Infinity : look_back;

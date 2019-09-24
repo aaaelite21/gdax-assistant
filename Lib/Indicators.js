@@ -95,17 +95,19 @@ function Vwap(candles) {
 
 function Rms(candles, lhoc) {
     lhoc = lhoc === undefined ? "close" : lhoc;
-    let mean = 0,
+    let total = 0,
+        mean = 0,
         squaredMean = 0;
+
     let points = candles.map(candle => {
         return candle[lhoc];
     });
 
     points.forEach(value => {
-        mean += value;
+        total += value;
     });
 
-    mean /= points.length;
+    mean = total / points.length;
 
     points.forEach(value => {
         squaredMean += Math.pow(value - mean, 2);
@@ -239,11 +241,26 @@ function Ema(candles, length, look_back, lhoc) {
     return ret;
 }
 
+function BollingerBands(candles, stdv, lhoc) {
+    stdv = stdv === undefined ? 2 : stdv;
+    lhoc = lhoc === undefined ? "close" : lhoc;
+    let sma = Sma(candles, lhoc);
+    let rms = Rms(candles, lhoc);
+
+
+
+    return {
+        sma: sma,
+        top: sma + rms * stdv,
+        bottom: sma - rms * stdv
+    }
+}
 
 module.exports = {
     Adx: Adx,
     Atr: Atr,
     Aroon: Aroon,
+    BollingerBands: BollingerBands,
     Ema: Ema,
     Highest: Highest,
     Ichimoku: Ichimoku,
