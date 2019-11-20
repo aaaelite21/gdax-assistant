@@ -33,9 +33,11 @@ class GdaxChart {
     return Indicators.Aroon(targetTimeFrame);
   }
 
-  Atr(length, offset) {
-    let targetTimeFrame = this.PreProcess(length, offset);
-    return Indicators.Atr(targetTimeFrame);
+  Atr(length, look_back, offset) {
+    let lb = look_back === undefined ? Infinity : look_back;
+    let ofs = offset === undefined ? 0 : Math.abs(offset);
+    let targetTimeFrame = this.candles.slice(ofs, this.candles.length);
+    return Indicators.Atr(targetTimeFrame, length, lb);
   }
   BollingerBands(length, stdv, offset, lhoc) {
     let targetTimeFrame = this.PreProcess(length, offset);

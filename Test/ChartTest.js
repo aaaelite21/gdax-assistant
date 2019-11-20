@@ -89,28 +89,28 @@ describe('Gdax-Chart', () => {
             assert.equal(l, 3683.56);
         });
     });
-    describe('#Atr', () => {
-        let c = new Chart(TestReturnedData);
-        it('returns the Atr of the designated time frame', () => {
-            let t = 0;
-            for (let i = 0; i < c.candles.length; i++) {
-                t += Math.abs(c.candles[i].open - c.candles[i].close);
-            }
+    // describe('#Atr', () => {
+    //     let c = new Chart(TestReturnedData);
+    //     it('returns the Atr of the designated time frame', () => {
+    //         let t = 0;
+    //         for (let i = 0; i < c.candles.length; i++) {
+    //             t += Math.abs(c.candles[i].open - c.candles[i].close);
+    //         }
 
-            let atr = c.Atr(c.candles.length);
-            assert.equal(atr, t / c.candles.length);
-        });
-        it('returns the Atr of the offset time frame', () => {
-            let t = 0;
-            for (let i = 2; i < c.candles.length; i++) {
-                t += Math.abs(c.candles[i].open - c.candles[i].close);
-            }
+    //         let atr = c.Atr(c.candles.length);
+    //         assert.equal(atr, t / c.candles.length);
+    //     });
+    //     it('returns the Atr of the offset time frame', () => {
+    //         let t = 0;
+    //         for (let i = 2; i < c.candles.length; i++) {
+    //             t += Math.abs(c.candles[i].open - c.candles[i].close);
+    //         }
 
-            let atr = c.Atr(c.candles.length - 2, 2);
-            assert.equal(atr, t / (c.candles.length - 2));
-        });
+    //         let atr = c.Atr(c.candles.length - 2, 2);
+    //         assert.equal(atr, t / (c.candles.length - 2));
+    //     });
 
-    });
+    // });
     describe('#Aroon', () => {
         let c = new Chart(TestReturnedData);
         it('returns the aroon up', () => {
