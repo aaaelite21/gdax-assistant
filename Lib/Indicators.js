@@ -7,14 +7,8 @@ function Sma(candles, lhoc) {
     return sum / candles.length;
 }
 
-function Atr(candles) {
-    return (
-        candles
-        .map(candle => {
-            return Math.abs(candle.open - candle.close);
-        })
-        .reduce(getSum) / candles.length
-    );
+function Atr(candles, length, offset) {
+    return SmoothedAtr(candles, length, offset);
 }
 
 function Highest(candles, lhoc) {
@@ -167,7 +161,11 @@ function Rsi(candles, length, look_back) {
     let {
         avg_gains,
         avg_losses
-    } = SmoothedAverageLossAndGains(candles, length, look_back);
+    } = SmoothedAverageLossAndGains(
+        candles,
+        length,
+        look_back
+    );
 
     if (avg_gains === 0) {
         return 0;
@@ -247,13 +245,11 @@ function BollingerBands(candles, stdv, lhoc) {
     let sma = Sma(candles, lhoc);
     let rms = Rms(candles, lhoc);
 
-
-
     return {
         sma: sma,
         top: sma + rms * stdv,
         bottom: sma - rms * stdv
-    }
+    };
 }
 
 module.exports = {
@@ -299,18 +295,21 @@ function min(array) {
 }
 
 function SmoothedAverageLossAndGains(candles, length, look_back) {
-    let current = candles[0].close - candles[1].close
+    let current = candles[0].close - candles[1].close;
     let ret = {
         avg_gains: current > 0 ? current : 0,
         avg_losses: current < 0 ? -1 * current : 0
-    }
+    };
 
     //keep it accurate as we reach the end
     let N = length;
     if (candles.length > length && look_back > 0) {
-
         //get the previous value
-        let prime = SmoothedAverageLossAndGains(candles.slice(1), length, look_back - 1);
+        let prime = SmoothedAverageLossAndGains(
+            candles.slice(1),
+            length,
+            look_back - 1
+        );
         ret.avg_gains = ((N - 1) * prime.avg_gains + ret.avg_gains) / N;
         ret.avg_losses = ((N - 1) * prime.avg_losses + ret.avg_losses) / N;
     } else {
@@ -346,7 +345,11 @@ function SmoothedPositiveMovemnet(candles, length, look_back) {
         //keep it accurate as we reach the end
         let N = length;
         //get the previous value
-        let prime = SmoothedPositiveMovemnet(candles.slice(1), length, look_back - 1);
+        let prime = SmoothedPositiveMovemnet(
+            candles.slice(1),
+            length,
+            look_back - 1
+        );
         ret = ((N - 1) * prime + cdm) / N;
     } else {
         //base case
@@ -371,7 +374,11 @@ function SmoothedNegativeMovemnet(candles, length, look_back) {
         //keep it accurate as we reach the end
         let N = length;
         //get the previous value
-        let prime = SmoothedNegativeMovemnet(candles.slice(1), length, look_back - 1);
+        let prime = SmoothedNegativeMovemnet(
+            candles.slice(1),
+            length,
+            look_back - 1
+        );
         ret = ((N - 1) * prime + cdm) / N;
     } else {
         //base case

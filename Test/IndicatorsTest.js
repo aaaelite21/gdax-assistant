@@ -19,11 +19,11 @@ describe('#Indicators', () => {
             assert.equal(Sma(TestTimeFrame).toFixed(2), "435.14");
         });
     });
-    describe('#Atr', () => {
-        it('gets the Atr', () => {
-            assert.equal(Atr(TestTimeFrame).toFixed(2), "0.07");
-        });
-    });
+    // describe('#Atr', () => {
+    //     it('gets the Atr', () => {
+    //         assert.equal(Atr(TestTimeFrame).toFixed(2), "0.07");
+    //     });
+    // });
     describe('#Highest', () => {
         it('gets the Highest High as default', () => {
             assert.equal(Highest(TestTimeFrame), 436);
