@@ -117,38 +117,66 @@ function Ichimoku(
     tenkanLength,
     kijunLength,
     periodLength,
-    clouOffset
+    cloudOffset
 ) {
+
+    let cloudOffsetIndex = cloudOffset - 1;
+
     let tenkansen =
         (Highest(candles.slice(0, tenkanLength), "high") +
-            Lowest(candles.slice(0, tenkanLength), "low")) /
-        2;
+            Lowest(candles.slice(0, tenkanLength), "low")) / 2;
     let kijunsen =
         (Highest(candles.slice(0, kijunLength), "high") +
-            Lowest(candles.slice(0, kijunLength), "low")) /
-        2;
+            Lowest(candles.slice(0, kijunLength), "low")) / 2;
 
     let senkouSpanB =
-        (Highest(candles.slice(clouOffset, clouOffset + periodLength), "high") +
-            Lowest(candles.slice(clouOffset, clouOffset + periodLength), "low")) /
-        2;
+        (Highest(candles.slice(cloudOffsetIndex, cloudOffsetIndex + periodLength), "high") +
+            Lowest(candles.slice(cloudOffsetIndex, cloudOffsetIndex + periodLength), "low")) / 2;
 
     let oldTenkansen =
-        (Highest(candles.slice(clouOffset, clouOffset + tenkanLength), "high") +
-            Lowest(candles.slice(clouOffset, clouOffset + tenkanLength), "low")) /
-        2;
+        (Highest(candles.slice(cloudOffsetIndex, cloudOffsetIndex + tenkanLength), "high") +
+            Lowest(candles.slice(cloudOffsetIndex, cloudOffsetIndex + tenkanLength), "low")) / 2;
+
     let oldKijunsen =
-        (Highest(candles.slice(clouOffset, clouOffset + kijunLength), "high") +
-            Lowest(candles.slice(clouOffset, clouOffset + kijunLength), "low")) /
-        2;
+        (Highest(candles.slice(cloudOffsetIndex, cloudOffsetIndex + kijunLength), "high") +
+            Lowest(candles.slice(cloudOffsetIndex, cloudOffsetIndex + kijunLength), "low")) / 2;
+
     let senkouSpanA = (oldTenkansen + oldKijunsen) / 2;
+
+    let forward = [];
+
+    for (let i = 1; i < cloudOffset; i++) {
+        let cofs = cloudOffsetIndex - i;
+
+        let temp_senkouSpanB =
+            (Highest(candles.slice(cofs, cofs + periodLength), "high") +
+                Lowest(candles.slice(cofs, cofs + periodLength), "low")) / 2;
+
+        let temp_oldTenkansen =
+            (Highest(candles.slice(cofs, cofs + tenkanLength), "high") +
+                Lowest(candles.slice(cofs, cofs + tenkanLength), "low")) / 2;
+
+        let temp_oldKijunsen =
+            (Highest(candles.slice(cofs, cofs + kijunLength), "high") +
+                Lowest(candles.slice(cofs, cofs + kijunLength), "low")) / 2;
+
+        let temp_senkouSpanA = (temp_oldTenkansen + temp_oldKijunsen) / 2;
+
+        forward.push({
+            top: Math.max(temp_senkouSpanA, temp_senkouSpanB),
+            bottom: Math.min(temp_senkouSpanA, temp_senkouSpanB),
+            bullish: temp_senkouSpanA > temp_senkouSpanB,
+            bearish: temp_senkouSpanB > temp_senkouSpanA
+        });
+    }
 
     return {
         cloud: {
             top: Math.max(senkouSpanA, senkouSpanB),
             bottom: Math.min(senkouSpanA, senkouSpanB),
             bullish: senkouSpanA > senkouSpanB,
-            bearish: senkouSpanB > senkouSpanA
+            bearish: senkouSpanB > senkouSpanA,
+            forward: forward
         },
         tkCross: tenkansen > kijunsen,
         ktCross: kijunsen > tenkansen,
