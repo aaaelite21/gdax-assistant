@@ -15,6 +15,7 @@ class Candle {
         this.head = this.high - Math.max(this.close, this.open);
         this.tail = Math.min(this.open, this.close) - this.low;
         this.body = Math.max(this.close, this.open) - Math.min(this.close, this.open);
+        this.twap = (this.close + this.high + this.low) / 3;
         if (previousGdaxCandleArray !== undefined) {
             this.tr = Math.max(
                 this.high - this.low,
