@@ -28,6 +28,31 @@ A library of useful tools and classes for working with information gathered via 
 
 - Gets the Adx, +Di (pDi) and -Di (nDi) of the current set of data
 
-## Gdax-Candle
-
 ## Gdax-Chart
+
+## Gdax-Candlegree
+
+    -   time: millisecond time of open
+    -   low: low price for the candle
+    -   high: high price for the candle
+    -   open: opening price for the candle
+    -   close: closing price for the candle
+    -   volume: volume for the candle
+    -   percent: percent change open to close
+    -   diff: change in price (close - open)
+    -   range: difference of high and low (high - low)
+    -   green: close > open
+    -   red: close < open
+    -   head: high - max(open, close)
+    -   tail: min(open, close) - tail
+    -   body: max(close, open) - min(close, open)
+    -   twap: (close + low + high) / 3
+    -   tr: true range (only if previous candle)
+
+    function toArray()
+        -   Returns a gdax pattern array of
+            time, low, high, open, close, volume
+
+    function toArray()
+        -   Returns a gdax pattern csv string of
+            time, low, high, open, close, volume

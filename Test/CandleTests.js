@@ -39,6 +39,9 @@ describe('#Candle', () => {
         it('has the proper volume', () => {
             assert.equal(c.volume, testCandle[5])
         });
+        it('has the proper twap', () => {
+            assert.equal(c.twap, (c.low + c.high + c.close) / 3);
+        });
         it('has the proper percent', () => {
             assert.equal(c.percent, 100 * (testCandle[4] - testCandle[3]) / testCandle[3])
         });
