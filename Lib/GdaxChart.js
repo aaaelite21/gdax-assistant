@@ -90,6 +90,11 @@ class GdaxChart {
     return Indicators.Percentile(targetTimeFrame, lhoc, percentile);
   }
 
+  PivotPoints(offset) {
+    let targetTimeFrame = this.PreProcess(1, offset);
+    return Indicators.PivotPoints(targetTimeFrame);
+  }
+
   Rsi(length, look_back, offset) {
     let lb = look_back === undefined ? Infinity : look_back;
     let ofs = offset === undefined ? 0 : Math.abs(offset);

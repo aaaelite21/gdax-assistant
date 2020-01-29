@@ -28,9 +28,13 @@ A library of useful tools and classes for working with information gathered via 
 
 - Gets the Adx, +Di (pDi) and -Di (nDi) of the current set of data
 
+### PivotPoints
+
+- returns two support values (s1, s2) where s1 > s2 and two resistance values (r1, r2) where r1 < r2>
+
 ## Gdax-Chart
 
-## Gdax-Candlegree
+## Gdax-Candle
 
     -   time: millisecond time of open
     -   low: low price for the candle

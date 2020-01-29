@@ -1,3 +1,22 @@
+function PivotPoints(candles) {
+    let high = candles[0].high,
+        low = candles[0].low,
+        close = candles[0].close;
+
+    let P = (high + low + close) / 3;
+    let R1 = (P * 2) - low;
+    let R2 = P + (high - low);
+    let S1 = (P * 2) - high;
+    let S2 = P - (high - low);
+
+    return {
+        s1: S1,
+        s2: S2,
+        r1: R1,
+        r2: R2
+    }
+}
+
 function Sma(candles, lhoc) {
     let sum = 0;
     lhoc = lhoc === undefined ? "close" : lhoc;
@@ -291,6 +310,7 @@ module.exports = {
     IndexOfHighest: IndexOfHighest,
     IndexOfLowest: IndexOfLowest,
     Lowest: Lowest,
+    PivotPoints: PivotPoints,
     Rms: Rms,
     Rsi: Rsi,
     Sma: Sma,
