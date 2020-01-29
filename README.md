@@ -32,6 +32,8 @@ A library of useful tools and classes for working with information gathered via 
 
 - returns two support values (s1, s2) where s1 > s2 and two resistance values (r1, r2) where r1 < r2.
 
+- JSON object format: {s1, s2, r1, r2}
+
 ```
     let pivots = chart.PivotPoints();
     console.log(pivots.r2);
