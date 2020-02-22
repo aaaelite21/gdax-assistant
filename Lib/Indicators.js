@@ -299,6 +299,18 @@ function BollingerBands(candles, stdv, lhoc) {
     };
 }
 
+function Macd(candle, shortLength, longLength, look_back, lhoc) {
+    let short = Ema(candle, shortLength, look_back, lhoc),
+        long = Ema(candle, longLength, look_back, lhoc);
+
+    return {
+        long: long,
+        short: short,
+        histogram: short - long
+    }
+
+}
+
 module.exports = {
     Adx: Adx,
     Atr: Atr,
@@ -310,6 +322,7 @@ module.exports = {
     IndexOfHighest: IndexOfHighest,
     IndexOfLowest: IndexOfLowest,
     Lowest: Lowest,
+    Macd: Macd,
     PivotPoints: PivotPoints,
     Rms: Rms,
     Rsi: Rsi,

@@ -85,6 +85,13 @@ class GdaxChart {
     return Indicators.Lowest(targetTimeFrame, lhoc);
   }
 
+  Macd(short_length, long_length, cmoothing, look_back, offset, lhoc) {
+    let lb = look_back === undefined ? Infinity : look_back;
+    let ofs = offset === undefined ? 0 : Math.abs(offset);
+    let targetTimeFrame = this.candles.slice(ofs, this.candles.length);
+    return Indicators.Macd(targetTimeFrame, short_length, long_length, lb, lhoc);
+  }
+
   Percentile(length, percentile, offset, lhoc) {
     let targetTimeFrame = this.PreProcess(length, offset);
     return Indicators.Percentile(targetTimeFrame, lhoc, percentile);
