@@ -270,14 +270,13 @@ function Adx(candles, length, look_back) {
 function Ema(candles, length, look_back, lhoc) {
     lhoc = lhoc === undefined ? "close" : lhoc;
     let ret = 0;
-
     if (candles.length > length && look_back > 0) {
         //keep it accurate as we reach the end
         let N = length;
         let k = 2 / (N + 1);
         let price = candles[0][lhoc];
         //get the previous value
-        let prime = Ema(candles.slice(1), length, look_back - 1);
+        let prime = Ema(candles.slice(1), length, look_back - 1, lhoc);
         ret = k * (price - prime) + prime;
     } else {
         ret = Sma(candles.slice(0, length), lhoc);
@@ -299,14 +298,22 @@ function BollingerBands(candles, stdv, lhoc) {
     };
 }
 
-function Macd(candle, shortLength, longLength, look_back, lhoc) {
-    let short = Ema(candle, shortLength, look_back, lhoc),
-        long = Ema(candle, longLength, look_back, lhoc);
+function Macd(candles, shortLength, longLength, smoothing, look_back, lhoc) {
+    let macdArray = [];
+    for(let i = 0; i < candles.length - longLength; i++){
+        let c = candles.slice(i, candles.length);
+        let short = Ema(c, shortLength, look_back, lhoc),
+        long = Ema(c, longLength, look_back, lhoc);
+        macdArray.push({macd: short - long});
+    }
+
+    let signal = Ema(macdArray, smoothing, 100, 'macd'),
+    macd = macdArray[0].macd;
 
     return {
-        long: long,
-        short: short,
-        histogram: short - long
+        macd: macd,
+        signal: signal,
+        histogram: macd - signal
     }
 
 }
