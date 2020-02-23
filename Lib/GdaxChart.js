@@ -5,13 +5,11 @@ class GdaxChart {
     //most recent is 0
     this.candles = [];
     for (let i = 0; i < RawCandleData.length; i++) {
-
       let c;
 
       if (i < RawCandleData.length - 1)
         c = new Candle(RawCandleData[i], RawCandleData[i + 1]);
-      else
-        c = new Candle(RawCandleData[i]);
+      else c = new Candle(RawCandleData[i]);
 
       this.candles.push(c);
     }
@@ -85,11 +83,14 @@ class GdaxChart {
     return Indicators.Lowest(targetTimeFrame, lhoc);
   }
 
-  Macd(short_length, long_length, smoothing, look_back, offset, lhoc) {
+  Macd(short_length, long_length, signal, look_back, offset, lhoc) {
+    let sl = short_length === undefined ? 12 : short_length;
+    let ll = long_length === undefined ? 26 : long_length;
+    let sig = signal === undefined ? 9 : signal;
     let lb = look_back === undefined ? Infinity : look_back;
     let ofs = offset === undefined ? 0 : Math.abs(offset);
     let targetTimeFrame = this.candles.slice(ofs, this.candles.length);
-    return Indicators.Macd(targetTimeFrame, short_length, long_length, smoothing, lb, lhoc);
+    return Indicators.Macd(targetTimeFrame, sl, ll, sig, lb, lhoc);
   }
 
   Percentile(length, percentile, offset, lhoc) {
