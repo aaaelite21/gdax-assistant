@@ -34,6 +34,11 @@ A library of useful tools and classes for working with information gathered via 
 
 - JSON object format: {s1, s2, r1, r2}
 
+### Macd
+
+- input: (short ema length, long ema length, smoothing length, recursive lookback, offset, candle attribute)
+- output: { short: short ema value, long: long ema value, macd: macd value, signal: signal line value, histogram: macd - signal}
+
 ```
     let pivots = chart.PivotPoints();
     console.log(pivots.r2);
