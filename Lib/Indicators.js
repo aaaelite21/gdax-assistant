@@ -321,20 +321,26 @@ function BollingerBands(candles, stdv, lhoc) {
 }
 
 function Macd(candles, shortLength, longLength, smoothing, look_back, lhoc) {
-  let macdArray = [];
+  let macdArray = [],
+    long,
+    short;
   for (let i = 0; i < candles.length - longLength; i++) {
     let c = candles.slice(i, candles.length);
-    let short = Ema(c, shortLength, look_back, lhoc),
-      long = Ema(c, longLength, look_back, lhoc);
-    macdArray.push({ macd: short - long, short: short, long: long });
+    let _short = Ema(c, shortLength, look_back, lhoc),
+      _long = Ema(c, longLength, look_back, lhoc);
+    if (i === 0) {
+      short = _short;
+      long = _long;
+    }
+    macdArray.push({ macd: _short - _long });
   }
 
   let signal = Ema(macdArray, smoothing, 100, "macd"),
     macd = macdArray[0].macd;
 
   return {
-    short: macdArray[0].short,
-    long: macdArray[0].long,
+    short: short,
+    long: long,
     macd: macd,
     signal: signal,
     histogram: macd - signal
