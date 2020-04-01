@@ -1,3 +1,5 @@
+let BandControl = require("./BandControl");
+
 function PivotPoints(candles) {
   let high = candles[0].high,
     low = candles[0].low,
@@ -151,9 +153,9 @@ function Ichimoku(
 
   let senkouSpanB =
     (Highest(
-      candles.slice(cloudOffsetIndex, cloudOffsetIndex + periodLength),
-      "high"
-    ) +
+        candles.slice(cloudOffsetIndex, cloudOffsetIndex + periodLength),
+        "high"
+      ) +
       Lowest(
         candles.slice(cloudOffsetIndex, cloudOffsetIndex + periodLength),
         "low"
@@ -162,9 +164,9 @@ function Ichimoku(
 
   let oldTenkansen =
     (Highest(
-      candles.slice(cloudOffsetIndex, cloudOffsetIndex + tenkanLength),
-      "high"
-    ) +
+        candles.slice(cloudOffsetIndex, cloudOffsetIndex + tenkanLength),
+        "high"
+      ) +
       Lowest(
         candles.slice(cloudOffsetIndex, cloudOffsetIndex + tenkanLength),
         "low"
@@ -173,9 +175,9 @@ function Ichimoku(
 
   let oldKijunsen =
     (Highest(
-      candles.slice(cloudOffsetIndex, cloudOffsetIndex + kijunLength),
-      "high"
-    ) +
+        candles.slice(cloudOffsetIndex, cloudOffsetIndex + kijunLength),
+        "high"
+      ) +
       Lowest(
         candles.slice(cloudOffsetIndex, cloudOffsetIndex + kijunLength),
         "low"
@@ -230,7 +232,10 @@ function Ichimoku(
 }
 
 function Rsi(candles, length, look_back) {
-  let { avg_gains, avg_losses } = SmoothedAverageLossAndGains(
+  let {
+    avg_gains,
+    avg_losses
+  } = SmoothedAverageLossAndGains(
     candles,
     length,
     look_back
@@ -332,7 +337,9 @@ function Macd(candles, shortLength, longLength, smoothing, look_back, lhoc) {
       short = _short;
       long = _long;
     }
-    macdArray.push({ macd: _short - _long });
+    macdArray.push({
+      macd: _short - _long
+    });
   }
 
   let signal = Ema(macdArray, smoothing, 100, "macd"),
@@ -345,6 +352,43 @@ function Macd(candles, shortLength, longLength, smoothing, look_back, lhoc) {
     signal: signal,
     histogram: macd - signal
   };
+}
+
+function SrLevels(candles, smoothing, bandSize, lhoc) {
+  lhoc = lhoc === undefined ? "close" : lhoc;
+  smoothing = smoothing === undefined ? 10 : smoothing;
+  bandSize = bandSize === undefined ? Atr(candles.slice(0, smoothing)) : bandSize;
+  let sp = []; //smoothed points
+  let dx_sp = []; //rate of change between each smoothed point
+
+  for (let i = 0; i < candles.length - smoothing; i++) {
+    sp.push(Sma(candles.slice(i, i + smoothing), lhoc));
+    if (i > 0) {
+      dx_sp.push(sp[i - 1] - sp[i]);
+    }
+  }
+
+  sp.pop(); //get rid of odd man out who has no rate of change
+
+  let SandR = [];
+
+  for (let i = 1; i < dx_sp.length; i++) {
+    if (
+      (dx_sp[i] >= 0 && dx_sp[i - 1] < 0) ||
+      (dx_sp[i] <= 0 && dx_sp[i - 1] > 0)
+    ) {
+      SandR.push(sp[i]);
+    }
+  }
+
+  let minVal = min(SandR);
+  let maxVal = max(SandR);
+
+  let bl = new BandControl.BandList(minVal, maxVal, bandSize);
+
+  bl.analyze(SandR);
+
+  return bl;
 }
 
 module.exports = {
@@ -363,6 +407,7 @@ module.exports = {
   Rms: Rms,
   Rsi: Rsi,
   Sma: Sma,
+  SrLevels: SrLevels,
   Vwap: Vwap,
   Percentile: Percentile
 };
