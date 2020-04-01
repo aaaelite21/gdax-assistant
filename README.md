@@ -2,6 +2,8 @@
 
 A library of useful tools and classes for working with information gathered via the Coinbase-Pro (Gdax) API
 
+## Gdax-Chart
+
 ## Indicators
 
 ### Atr
@@ -47,7 +49,42 @@ A library of useful tools and classes for working with information gathered via 
     console.log(pivots.s2);
 ```
 
-## Gdax-Chart
+### SrBands
+
+- input: (smoothing, bandSize, length, offset, lhoc)
+  - Defaults
+    - smoothing: 10
+    - bandSize: Atr(smoothing)
+    - length: chart.candles.length (all candles)
+    - offset: 0
+    - lhoc: 'close'
+- output: BandList Object
+  - BandList.bands []: Band Objects sorted by the count (highest count at 0 index)
+    - Bands
+      - count #: number of times there is a turn around in that band intender to determine the value/weight of a given band
+      - price {}:
+        - min #: min price in the band
+        - max #: max price in the band
+        - mean #: mean of the min and max values
+    - seperateSupportAndResistance(price): seperates the bads into those above and below price
+    - inputs:
+      - price #: price used to mark what is support and what is resistance
+      - output:
+        - object containing two sorted arrays or band objects, resistance and support
+          - resistance: band's with a price.mean above the input price. 0 index is lowest price
+          - support: band's with a price.mean below the input price. 0 index is highest price
+  - Example:
+  ```
+   let bands = chart.SrBands();
+   let sr = bands.seperateSupportAndResistance(chart.candles[0].close);
+   sr.resistance.reverse().forEach(r => {
+        console.log(r.price.mean);
+      });
+      console.log();
+      sr.support.forEach(s => {
+        console.log(s.price.mean);
+      });
+  ```
 
 ## Gdax-Candle
 

@@ -120,12 +120,18 @@ class GdaxChart {
     return Indicators.Sma(targetTimeFrame, lhoc);
   }
 
+  SrBands(smoothing, bucketSize, length, offset, lhoc) {
+    let targetTimeFrame = this.PreProcess(length, offset);
+    return Indicators.SrLevels(targetTimeFrame, smoothing, bucketSize, lhoc);
+  }
+
   Vwap(length, offset) {
     let targetTimeFrame = this.PreProcess(length, offset);
     return Indicators.Vwap(targetTimeFrame);
   }
 
   PreProcess(length, ofs) {
+    if (length === undefined) length = this.candles.length;
     if (length > this.candles.length) throw "Not enough candles";
     let offset = ofs === undefined ? 0 : Math.abs(ofs);
     let targetTimeFrame = this.candles.slice(offset, offset + length);
