@@ -24,7 +24,6 @@ describe('Gdax-Chart', () => {
         it('has no value above 100', () => {
             let c = new Chart(TestReturnedData);
             let a = c.Adx(14, 14);
-            console.log(a)
             assert.equal(a.pDi, 95.12480499220196);
             assert.equal(a.nDi, 0);
             assert.equal(a.adx, 100);
