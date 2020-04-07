@@ -59,20 +59,28 @@ A library of useful tools and classes for working with information gathered via 
     - offset: 0
     - lhoc: 'close'
 - output: BandList Object
-  - BandList.bands []: Band Objects sorted by the count (highest count at 0 index)
+  - BandList []: Band Objects sorted by the count (highest count at 0 index)
     - Bands
       - count #: number of times there is a turn around in that band intender to determine the value/weight of a given band
+      - rank #: periods since smoothed average tested that level
       - price {}:
         - min #: min price in the band
         - max #: max price in the band
         - mean #: mean of the min and max values
+    - orderByRank(dir)
+      - sorts the BandList by rank in assending order. if dir = -1 desending order
+    - orderByPrice(dir)
+      - sorts the BandList by price.mean in desending order. if dir = -1 assending order
+    - orderByCount(dir)
+      - sorts the BandList by count rank in assending order. if dir = -1 desneding order
     - seperateSupportAndResistance(price): seperates the bads into those above and below price
-    - inputs:
-      - price #: price used to mark what is support and what is resistance
-      - output:
-        - object containing two sorted arrays or band objects, resistance and support
-          - resistance: band's with a price.mean above the input price. 0 index is lowest price
-          - support: band's with a price.mean below the input price. 0 index is highest price
+      - shorthand mapping: seperate(price)
+      - inputs:
+        - price #: price used to mark what is support and what is resistance
+        - output:
+          - object containing two sorted BandList objects, resistance and support
+            - resistance: band's with a price.mean above the input price. 0 index is lowest price
+            - support: band's with a price.mean below the input price. 0 index is highest price
   - Example:
   ```
    let bands = chart.SrBands();
@@ -112,7 +120,3 @@ A library of useful tools and classes for working with information gathered via 
     function toArray()
         -   Returns a gdax pattern csv string of
             time, low, high, open, close, volume
-
-```
-
-```
