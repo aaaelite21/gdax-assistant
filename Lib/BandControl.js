@@ -85,15 +85,27 @@ class BandList extends Array {
     }
   }
 
-  orderByRank() {
-    this.sort((a, b) => {
-      return a.rank - b.rank;
-    });
+  orderByRank(direction) {
+    if (direction === undefined || direction !== -1) {
+      this.sort((a, b) => {
+        return a.rank - b.rank;
+      });
+    } else if (direction === -1) {
+      this.sort((a, b) => {
+        return b.rank - a.rank;
+      });
+    }
   }
-  orderByCount() {
-    this.sort((a, b) => {
-      return b.count - a.count;
-    });
+  orderByCount(direction) {
+    if (direction === undefined || direction !== -1) {
+      this.sort((a, b) => {
+        return b.count - a.count;
+      });
+    } else if (direction === -1) {
+      this.sort((a, b) => {
+        return a.count - b.count;
+      });
+    }
   }
   orderByPrice(direction) {
     if (direction === undefined || direction !== -1) {

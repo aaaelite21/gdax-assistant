@@ -43,6 +43,15 @@ describe("#BandControl", () => {
                     }
                     assert.notEqual(bandlist[0].rank, bandlist[bandlist.length - 1].rank)
                 });
+                it('puts the bands in desending order of rank', () => {
+                    bandlist.orderByRank(-1);
+                    for (let index = 1; index < bandlist.length; index++) {
+                        const e = bandlist[index];
+                        const ep = bandlist[index - 1];
+                        assert(e.rank <= ep.rank)
+                    }
+                    assert.notEqual(bandlist[0].rank, bandlist[bandlist.length - 1].rank)
+                });
             });
             describe('#orderByCount', () => {
                 it('puts the bands in desending order of count', () => {
@@ -54,6 +63,15 @@ describe("#BandControl", () => {
                     }
                     assert.notEqual(bandlist[0].count, bandlist[bandlist.length - 1].count)
                 });
+                it('puts the bands in assending order of count', () => {
+                    bandlist.orderByCount(-1);
+                    for (let index = 1; index < bandlist.length; index++) {
+                        const e = bandlist[index];
+                        const ep = bandlist[index - 1];
+                        assert(e.count >= ep.count)
+                    }
+                    assert.notEqual(bandlist[0].count, bandlist[bandlist.length - 1].count)
+                });
             });
             describe('#orderByPrice', () => {
                 it('puts the bands in assending order of price', () => {
@@ -62,6 +80,15 @@ describe("#BandControl", () => {
                         const e = bandlist[index];
                         const ep = bandlist[index - 1];
                         assert(e.price.mean > ep.price.mean)
+                    }
+                    assert.notEqual(bandlist[0].price.mean, bandlist[bandlist.length - 1].price.mean)
+                });
+                it('puts the bands in desending order of price', () => {
+                    bandlist.orderByPrice(-1);
+                    for (let index = 1; index < bandlist.length; index++) {
+                        const e = bandlist[index];
+                        const ep = bandlist[index - 1];
+                        assert(e.price.mean < ep.price.mean)
                     }
                     assert.notEqual(bandlist[0].price.mean, bandlist[bandlist.length - 1].price.mean)
                 });
