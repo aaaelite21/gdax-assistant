@@ -21,23 +21,21 @@ class BandList extends Array {
       let minVal = a,
         maxVal = b,
         bandSize = c;
-      this.bandSize = bandSize
+      this.bandSize = bandSize;
       while (minVal < maxVal) {
         this.push(new Band(minVal, bandSize));
         minVal += this.bandSize;
       }
     } else {
-      this.bandSize = a
+      this.bandSize = a;
     }
   }
-
 
   /**
    *
    * @param {Number[]} SandR
    */
   analyze(SandR) {
-
     //get the number of turn arounds in each section
     SandR.forEach((price, rank) => {
       for (let i = 0; i < this.length; i++) {
@@ -54,8 +52,10 @@ class BandList extends Array {
     this.orderByCount();
 
     //remove bands with zero count
-    while (this[this.length - 1].count === 0) {
-      this.pop();
+    if (this.length >= 0) {
+      while (this[this.length - 1].count === 0) {
+        this.pop();
+      }
     }
 
     this.orderByPrice();
@@ -63,13 +63,13 @@ class BandList extends Array {
 
   //added this for cleaner code
   seperate(price) {
-    return this.seperateSupportAndResistance(price)
+    return this.seperateSupportAndResistance(price);
   }
 
   seperateSupportAndResistance(price) {
     let support = new BandList(this.bandSize);
     let resistance = new BandList(this.bandSize);
-    this.forEach(band => {
+    this.forEach((band) => {
       if (band.price.mean > price) {
         resistance.push(band);
       } else {
@@ -81,8 +81,8 @@ class BandList extends Array {
 
     return {
       support: support,
-      resistance: resistance
-    }
+      resistance: resistance,
+    };
   }
 
   orderByRank(direction) {
@@ -117,11 +117,10 @@ class BandList extends Array {
         return b.price.mean - a.price.mean;
       });
     }
-
   }
 }
 
 module.exports = {
   Band: Band,
-  BandList: BandList
+  BandList: BandList,
 };
