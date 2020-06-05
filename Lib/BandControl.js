@@ -52,7 +52,7 @@ class BandList extends Array {
     this.orderByCount();
 
     //remove bands with zero count
-    if (this.length >= 0) {
+    if (this.length > 0) {
       while (this[this.length - 1].count === 0) {
         this.pop();
       }
