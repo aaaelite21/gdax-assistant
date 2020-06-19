@@ -73,6 +73,8 @@ A library of useful tools and classes for working with information gathered via 
       - sorts the BandList by price.mean in desending order. if dir = -1 assending order
     - orderByCount(dir)
       - sorts the BandList by count rank in assending order. if dir = -1 desneding order
+    - getCurrent(price)
+      - gets the current band that the price resides in and returns -1 if there is no range
     - seperateSupportAndResistance(price): seperates the bads into those above and below price
       - shorthand mapping: seperate(price)
       - inputs:
