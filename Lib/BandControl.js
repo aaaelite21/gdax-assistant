@@ -96,6 +96,7 @@ class BandList extends Array {
       });
     }
   }
+
   orderByCount(direction) {
     if (direction === undefined || direction !== -1) {
       this.sort((a, b) => {
@@ -107,6 +108,7 @@ class BandList extends Array {
       });
     }
   }
+
   orderByPrice(direction) {
     if (direction === undefined || direction !== -1) {
       this.sort((a, b) => {
@@ -117,6 +119,15 @@ class BandList extends Array {
         return b.price.mean - a.price.mean;
       });
     }
+  }
+
+  currentBand(price) {
+    for (let i = 0; i < this.length; i++) {
+      if (this[i].price.min <= price && this[i].price.max >= price) {
+        return this[i];
+      }
+    }
+    return -1;
   }
 }
 
