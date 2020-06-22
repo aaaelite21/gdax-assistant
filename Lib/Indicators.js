@@ -15,7 +15,7 @@ function PivotPoints(candles) {
     s1: S1,
     s2: S2,
     r1: R1,
-    r2: R2
+    r2: R2,
   };
 }
 
@@ -34,7 +34,7 @@ function Atr(candles, length, offset) {
 
 function Highest(candles, lhoc) {
   lhoc = lhoc === undefined ? "close" : lhoc;
-  let points = candles.map(candle => {
+  let points = candles.map((candle) => {
     return candle[lhoc];
   });
 
@@ -43,7 +43,7 @@ function Highest(candles, lhoc) {
 
 function IndexOfHighest(candles, lhoc) {
   lhoc = lhoc === undefined ? "close" : lhoc;
-  let points = candles.map(candle => {
+  let points = candles.map((candle) => {
     return candle[lhoc];
   });
   let indexOfMax = -1;
@@ -60,7 +60,7 @@ function IndexOfHighest(candles, lhoc) {
 
 function Lowest(candles, lhoc) {
   lhoc = lhoc === undefined ? "close" : lhoc;
-  let points = candles.map(candle => {
+  let points = candles.map((candle) => {
     return candle[lhoc];
   });
 
@@ -69,7 +69,7 @@ function Lowest(candles, lhoc) {
 
 function IndexOfLowest(candles, lhoc) {
   lhoc = lhoc === undefined ? "close" : lhoc;
-  let points = candles.map(candle => {
+  let points = candles.map((candle) => {
     return candle[lhoc];
   });
   let indexOfMin = -1;
@@ -92,7 +92,7 @@ function Aroon(candles) {
   return {
     up: up,
     down: down,
-    oscillator: oscillator
+    oscillator: oscillator,
   };
 }
 
@@ -114,17 +114,17 @@ function Rms(candles, lhoc) {
     mean = 0,
     squaredMean = 0;
 
-  let points = candles.map(candle => {
+  let points = candles.map((candle) => {
     return candle[lhoc];
   });
 
-  points.forEach(value => {
+  points.forEach((value) => {
     total += value;
   });
 
   mean = total / points.length;
 
-  points.forEach(value => {
+  points.forEach((value) => {
     squaredMean += Math.pow(value - mean, 2);
   });
 
@@ -138,7 +138,7 @@ function Ichimoku(
   tenkanLength,
   kijunLength,
   periodLength,
-  cloudOffset
+  cloudOffset,
 ) {
   let cloudOffsetIndex = cloudOffset - 1;
 
@@ -153,34 +153,34 @@ function Ichimoku(
 
   let senkouSpanB =
     (Highest(
-        candles.slice(cloudOffsetIndex, cloudOffsetIndex + periodLength),
-        "high"
-      ) +
+      candles.slice(cloudOffsetIndex, cloudOffsetIndex + periodLength),
+      "high",
+    ) +
       Lowest(
         candles.slice(cloudOffsetIndex, cloudOffsetIndex + periodLength),
-        "low"
+        "low",
       )) /
     2;
 
   let oldTenkansen =
     (Highest(
-        candles.slice(cloudOffsetIndex, cloudOffsetIndex + tenkanLength),
-        "high"
-      ) +
+      candles.slice(cloudOffsetIndex, cloudOffsetIndex + tenkanLength),
+      "high",
+    ) +
       Lowest(
         candles.slice(cloudOffsetIndex, cloudOffsetIndex + tenkanLength),
-        "low"
+        "low",
       )) /
     2;
 
   let oldKijunsen =
     (Highest(
-        candles.slice(cloudOffsetIndex, cloudOffsetIndex + kijunLength),
-        "high"
-      ) +
+      candles.slice(cloudOffsetIndex, cloudOffsetIndex + kijunLength),
+      "high",
+    ) +
       Lowest(
         candles.slice(cloudOffsetIndex, cloudOffsetIndex + kijunLength),
-        "low"
+        "low",
       )) /
     2;
 
@@ -212,7 +212,7 @@ function Ichimoku(
       top: Math.max(temp_senkouSpanA, temp_senkouSpanB),
       bottom: Math.min(temp_senkouSpanA, temp_senkouSpanB),
       bullish: temp_senkouSpanA > temp_senkouSpanB,
-      bearish: temp_senkouSpanB > temp_senkouSpanA
+      bearish: temp_senkouSpanB > temp_senkouSpanA,
     });
   }
 
@@ -222,23 +222,20 @@ function Ichimoku(
       bottom: Math.min(senkouSpanA, senkouSpanB),
       bullish: senkouSpanA > senkouSpanB,
       bearish: senkouSpanB > senkouSpanA,
-      forward: forward
+      forward: forward,
     },
     tkCross: tenkansen > kijunsen,
     ktCross: kijunsen > tenkansen,
     kijunsen: kijunsen,
-    tenkansen: tenkansen
+    tenkansen: tenkansen,
   };
 }
 
 function Rsi(candles, length, look_back) {
-  let {
-    avg_gains,
-    avg_losses
-  } = SmoothedAverageLossAndGains(
+  let { avg_gains, avg_losses } = SmoothedAverageLossAndGains(
     candles,
     length,
-    look_back
+    look_back,
   );
 
   if (avg_gains === 0) {
@@ -254,7 +251,7 @@ function Rsi(candles, length, look_back) {
 
 function Percentile(candles, lhoc, percentile) {
   lhoc = lhoc === undefined ? "close" : lhoc;
-  let arr = candles.map(candle => {
+  let arr = candles.map((candle) => {
     return candle[lhoc];
   });
   arr.sort();
@@ -290,7 +287,7 @@ function Adx(candles, length, look_back) {
     adx: adx,
     pDi: pDi,
     nDi: nDi,
-    dx: dx
+    dx: dx,
   };
 }
 
@@ -321,7 +318,7 @@ function BollingerBands(candles, stdv, lhoc) {
   return {
     sma: sma,
     top: sma + rms * stdv,
-    bottom: sma - rms * stdv
+    bottom: sma - rms * stdv,
   };
 }
 
@@ -338,7 +335,7 @@ function Macd(candles, shortLength, longLength, smoothing, look_back, lhoc) {
       long = _long;
     }
     macdArray.push({
-      macd: _short - _long
+      macd: _short - _long,
     });
   }
 
@@ -350,14 +347,15 @@ function Macd(candles, shortLength, longLength, smoothing, look_back, lhoc) {
     long: long,
     macd: macd,
     signal: signal,
-    histogram: macd - signal
+    histogram: macd - signal,
   };
 }
 
 function SrLevels(candles, smoothing, bandSize, lhoc) {
   lhoc = lhoc === undefined ? "close" : lhoc;
   smoothing = smoothing === undefined ? 10 : smoothing;
-  bandSize = bandSize === undefined ? Atr(candles.slice(0, smoothing)) : bandSize;
+  bandSize =
+    bandSize === undefined ? Atr(candles, smoothing, smoothing * 5) : bandSize;
   let sp = []; //smoothed points
   let dx_sp = []; //rate of change between each smoothed point
 
@@ -409,7 +407,7 @@ module.exports = {
   Sma: Sma,
   SrLevels: SrLevels,
   Vwap: Vwap,
-  Percentile: Percentile
+  Percentile: Percentile,
 };
 
 function getSum(total, num) {
@@ -418,7 +416,7 @@ function getSum(total, num) {
 
 function max(array) {
   let max = -Infinity;
-  array.forEach(element => {
+  array.forEach((element) => {
     if (element > max) {
       max = element;
     }
@@ -428,7 +426,7 @@ function max(array) {
 
 function min(array) {
   let min = Infinity;
-  array.forEach(element => {
+  array.forEach((element) => {
     if (element < min) {
       min = element;
     }
@@ -440,7 +438,7 @@ function SmoothedAverageLossAndGains(candles, length, look_back) {
   let current = candles[0].close - candles[1].close;
   let ret = {
     avg_gains: current > 0 ? current : 0,
-    avg_losses: current < 0 ? -1 * current : 0
+    avg_losses: current < 0 ? -1 * current : 0,
   };
 
   //keep it accurate as we reach the end
@@ -450,7 +448,7 @@ function SmoothedAverageLossAndGains(candles, length, look_back) {
     let prime = SmoothedAverageLossAndGains(
       candles.slice(1),
       length,
-      look_back - 1
+      look_back - 1,
     );
     ret.avg_gains = ((N - 1) * prime.avg_gains + ret.avg_gains) / N;
     ret.avg_losses = ((N - 1) * prime.avg_losses + ret.avg_losses) / N;
@@ -490,7 +488,7 @@ function SmoothedPositiveMovemnet(candles, length, look_back) {
     let prime = SmoothedPositiveMovemnet(
       candles.slice(1),
       length,
-      look_back - 1
+      look_back - 1,
     );
     ret = ((N - 1) * prime + cdm) / N;
   } else {
@@ -519,7 +517,7 @@ function SmoothedNegativeMovemnet(candles, length, look_back) {
     let prime = SmoothedNegativeMovemnet(
       candles.slice(1),
       length,
-      look_back - 1
+      look_back - 1,
     );
     ret = ((N - 1) * prime + cdm) / N;
   } else {
