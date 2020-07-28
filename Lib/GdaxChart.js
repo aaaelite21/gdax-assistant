@@ -57,15 +57,20 @@ class GdaxChart {
   Ichimoku(tenkanLength, kijunLength, periodLength, clouOffset) {
     let targetTimeFrame = this.PreProcess(
       Math.max(periodLength + clouOffset),
-      0
+      0,
     );
     return Indicators.Ichimoku(
       targetTimeFrame,
       tenkanLength,
       kijunLength,
       periodLength,
-      clouOffset
+      clouOffset,
     );
+  }
+
+  KST(length, offset, lhoc) {
+    let targetTimeFrame = this.PreProcess(54, offset);
+    return Indicators.KST(targetTimeFrame, lhoc);
   }
 
   IndexOfHighest(length, offset, lhoc) {
