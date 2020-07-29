@@ -231,6 +231,23 @@ function Ichimoku(
   };
 }
 
+function KnowSureThing(candles, lhoc, short, long, signal) {
+  //need to have atleast 45 candles
+  lhoc = lhoc === undefined ? "close" : lhoc;
+  short = short === undefined ? 10 : short;
+  long = long === undefined ? 15 : long;
+  signal = signal === undefined ? 9 : signal;
+
+  let cc = candles.slice(0, candles.length);
+  let kstArray = [];
+  for (let i = 0; i < signal; i++) {
+    kstArray.push(_KST(cc, lhoc, short, long));
+    cc.shift();
+  }
+
+  return { kst: kstArray[0], signal: average(kstArray) };
+}
+
 function Rsi(candles, length, look_back) {
   let { avg_gains, avg_losses } = SmoothedAverageLossAndGains(
     candles,
@@ -396,6 +413,7 @@ module.exports = {
   BollingerBands: BollingerBands,
   Ema: Ema,
   Highest: Highest,
+  KST: KnowSureThing,
   Ichimoku: Ichimoku,
   IndexOfHighest: IndexOfHighest,
   IndexOfLowest: IndexOfLowest,
@@ -410,8 +428,41 @@ module.exports = {
   Percentile: Percentile,
 };
 
-function getSum(total, num) {
-  return total + num;
+function ROC(currentValue, previousValue) {
+  return (currentValue / previousValue - 1) * 100;
+}
+
+function _KST(candles, lhoc, short, long) {
+  //Calc RCMA #1 10-Period SMA of 10-period ROC
+  let rcm1 = [],
+    //Calc RCMA #2 10-Period SMA of 15-period ROC
+    rcm2 = [],
+    //Calc RCMA #3 10-Period SMA of 20-period ROC
+    rcm3 = [],
+    //Calc RCMA #4 15-Period SMA of 30-period ROC
+    rcm4 = [];
+  for (let i = 0; i < long; i++) {
+    if (i < 10) {
+      rcm1.push(ROC(candles[i][lhoc], candles[i + short][lhoc]));
+      rcm2.push(ROC(candles[i][lhoc], candles[i + long][lhoc]));
+      rcm3.push(ROC(candles[i][lhoc], candles[i + short * 2][lhoc]));
+    }
+    rcm4.push(ROC(candles[i][lhoc], candles[i + long * 2][lhoc]));
+  }
+  let rmca1 = average(rcm1),
+    rmca2 = average(rcm2),
+    rmca3 = average(rcm3),
+    rmca4 = average(rcm4);
+
+  return rmca1 + rmca2 * 2 + rmca3 * 3 + rmca4 * 4;
+}
+
+function average(array) {
+  let total = 0;
+  array.forEach((val) => {
+    total += val;
+  });
+  return total / array.length;
 }
 
 function max(array) {

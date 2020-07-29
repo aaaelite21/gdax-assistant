@@ -49,6 +49,12 @@ A library of useful tools and classes for working with information gathered via 
     console.log(pivots.s2);
 ```
 
+### Know Sure Thing (KST)
+
+- input: (lhoc: string, short: int, long: int, signal: int)
+  - defaults ('close', 10, 15, 9)
+- output {kst: float, signal: float}
+
 ### SrBands
 
 - input: (smoothing, bandSize, length, offset, lhoc)
