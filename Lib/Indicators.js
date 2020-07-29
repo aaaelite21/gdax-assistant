@@ -231,14 +231,17 @@ function Ichimoku(
   };
 }
 
-function KnowSureThing(candles, lhoc) {
+function KnowSureThing(candles, lhoc, short, long, signal) {
   //need to have atleast 45 candles
   lhoc = lhoc === undefined ? "close" : lhoc;
+  short = short === undefined ? 10 : short;
+  long = long === undefined ? 15 : long;
+  signal = signal === undefined ? 9 : signal;
 
   let cc = candles.slice(0, candles.length);
   let kstArray = [];
-  for (let i = 0; i < 9; i++) {
-    kstArray.push(_KST(cc, lhoc));
+  for (let i = 0; i < signal; i++) {
+    kstArray.push(_KST(cc, lhoc, short, long));
     cc.shift();
   }
 
@@ -429,7 +432,7 @@ function ROC(currentValue, previousValue) {
   return (currentValue / previousValue - 1) * 100;
 }
 
-function _KST(candles, lhoc) {
+function _KST(candles, lhoc, short, long) {
   //Calc RCMA #1 10-Period SMA of 10-period ROC
   let rcm1 = [],
     //Calc RCMA #2 10-Period SMA of 15-period ROC
@@ -438,13 +441,13 @@ function _KST(candles, lhoc) {
     rcm3 = [],
     //Calc RCMA #4 15-Period SMA of 30-period ROC
     rcm4 = [];
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < long; i++) {
     if (i < 10) {
-      rcm1.push(ROC(candles[i][lhoc], candles[i + 10][lhoc]));
-      rcm2.push(ROC(candles[i][lhoc], candles[i + 15][lhoc]));
-      rcm3.push(ROC(candles[i][lhoc], candles[i + 20][lhoc]));
+      rcm1.push(ROC(candles[i][lhoc], candles[i + short][lhoc]));
+      rcm2.push(ROC(candles[i][lhoc], candles[i + long][lhoc]));
+      rcm3.push(ROC(candles[i][lhoc], candles[i + short * 2][lhoc]));
     }
-    rcm4.push(ROC(candles[i][lhoc], candles[i + 30][lhoc]));
+    rcm4.push(ROC(candles[i][lhoc], candles[i + long * 2][lhoc]));
   }
   let rmca1 = average(rcm1),
     rmca2 = average(rcm2),
