@@ -406,12 +406,30 @@ function SrLevels(candles, smoothing, bandSize, lhoc) {
   return bl;
 }
 
+function FibRetracement(start, end) {
+  const levels = [0.236, 0.382, 0.5, 0.618, 0.786];
+  let diff = Math.abs(start - end);
+  let fibs = levels.map((value) => {
+    return diff * value;
+  });
+  return {
+    fib_000: end,
+    fib_236: end > start ? end - fibs[0] : end + fibs[0],
+    fib_382: end > start ? end - fibs[1] : end + fibs[1],
+    fib_500: end > start ? end - fibs[2] : end + fibs[2],
+    fib_618: end > start ? end - fibs[3] : end + fibs[3],
+    fib_786: end > start ? end - fibs[4] : end + fibs[4],
+    fib_1000: start,
+  };
+}
+
 module.exports = {
   Adx: Adx,
   Atr: Atr,
   Aroon: Aroon,
   BollingerBands: BollingerBands,
   Ema: Ema,
+  FibRetracement: FibRetracement,
   Highest: Highest,
   KST: KnowSureThing,
   Ichimoku: Ichimoku,
