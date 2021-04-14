@@ -94,26 +94,4 @@ describe("#Indicators", () => {
       assert.deepEqual(arr, clone);
     });
   });
-  describe("#FibRetracement", () => {
-    it("works when the start is less than the end", () => {
-      let fibs = FibRetracement(0, 100);
-      assert.strictEqual(fibs.fib_000, 100);
-      assert.strictEqual(fibs.fib_236, 76.4);
-      assert.strictEqual(fibs.fib_382, 61.8);
-      assert.strictEqual(fibs.fib_500, 50);
-      assert.strictEqual(fibs.fib_618, 38.2);
-      assert.strictEqual(fibs.fib_786.toFixed(1), "21.4");
-      assert.strictEqual(fibs.fib_1000, 0);
-    });
-    it("works when the start is greater than the end", () => {
-      let fibs = FibRetracement(100, 0);
-      assert.strictEqual(fibs.fib_000, 0);
-      assert.strictEqual(fibs.fib_236.toFixed(1), "23.6");
-      assert.strictEqual(fibs.fib_382, 38.2);
-      assert.strictEqual(fibs.fib_500, 50);
-      assert.strictEqual(fibs.fib_618, 61.8);
-      assert.strictEqual(fibs.fib_786.toFixed(1), "78.6");
-      assert.strictEqual(fibs.fib_1000, 100);
-    });
-  });
 });

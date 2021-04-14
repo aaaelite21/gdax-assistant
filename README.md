@@ -128,3 +128,34 @@ A library of useful tools and classes for working with information gathered via 
     function toArray()
         -   Returns a gdax pattern csv string of
             time, low, high, open, close, volume
+
+## Fibs
+
+Code
+
+```
+const { Fibs } = require("gdax-assistant");
+
+let levels = Fibs(50, 100);
+```
+
+### Outputs
+
+```
+levels = {
+fib_n0618: 130.9,
+fib_n0389: 119.1,
+fib_0000: 100,
+fib_0236: 88.2,
+fib_0382: 80.9,
+fib_0500: 75,
+fib_0618: 69.1,
+fib_0786: 60.699999999999996,
+fib_1000: 50,
+fib_1414: 29.299999999999997,
+fib_2414: -20.700000000000003
+}
+```
+
+The above code is used when calulating the fibs retracements and extensions after a move from 50 to 100 dollars.
+The "n" in the name denotes a negative number. For example n0618 is the -0.618 extension level.
