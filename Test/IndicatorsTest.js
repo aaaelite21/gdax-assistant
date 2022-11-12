@@ -9,6 +9,7 @@ const {
   IndexOfLowest,
   Aroon,
   Percentile,
+  Roi,
   FibRetracement,
 } = GdaxAssistant.Indicators;
 const assert = require("assert");
@@ -38,6 +39,11 @@ describe("#Indicators", () => {
   describe("#IndexOfHighest", () => {
     it("gets the index of the highest close as default", () => {
       assert.strictEqual(IndexOfHighest(TestTimeFrame), 14);
+    });
+  });
+  describe("#Roi", () => {
+    it("get the ROI over the given time frame as a percent", () => {
+      assert.strictEqual(Roi(TestTimeFrame).toFixed(2), "0.27");
     });
   });
   describe("#Aroon", () => {
