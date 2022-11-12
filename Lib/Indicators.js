@@ -133,6 +133,15 @@ function Rms(candles, lhoc) {
   return Math.sqrt(squaredMean);
 }
 
+function Roi(candles, lhoc) {
+  lhoc = lhoc === undefined ? "close" : lhoc;
+  return (
+    100 *
+    ((candles[0][lhoc] - candles[candles.length - 1][lhoc]) /
+      candles[candles.length - 1][lhoc])
+  );
+}
+
 function Ichimoku(
   candles,
   tenkanLength,
@@ -422,6 +431,7 @@ module.exports = {
   PivotPoints: PivotPoints,
   Rms: Rms,
   Rsi: Rsi,
+  Roi: Roi,
   Sma: Sma,
   SrLevels: SrLevels,
   Vwap: Vwap,

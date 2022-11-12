@@ -120,6 +120,11 @@ class GdaxChart {
     return Indicators.Rms(targetTimeFrame, lhoc);
   }
 
+  Roi(length, offset, lhoc) {
+    let targetTimeFrame = this.PreProcess(length, offset);
+    return Indicators.Roi(targetTimeFrame, lhoc);
+  }
+
   Sma(length, offset, lhoc) {
     let targetTimeFrame = this.PreProcess(length, offset);
     return Indicators.Sma(targetTimeFrame, lhoc);
