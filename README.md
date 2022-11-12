@@ -36,6 +36,11 @@ A library of useful tools and classes for working with information gathered via 
 
 - JSON object format: {s1, s2, r1, r2}
 
+### Roi
+
+- returns a percent (-100-100+) of the retunf on investmnet of the given time frame and lhoc value
+- example -3.5%
+
 ### Macd
 
 - input: (short ema length, long ema length, smoothing length, recursive lookback, offset, candle attribute)
