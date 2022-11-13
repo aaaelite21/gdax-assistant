@@ -275,15 +275,44 @@ function Rsi(candles, length, look_back) {
   }
 }
 
+/**
+ *
+ * @param {Array} candles
+ * @param {String} lhoc
+ * @param {Number} percentile
+ */
 function Percentile(candles, lhoc, percentile) {
   lhoc = lhoc === undefined ? "close" : lhoc;
   let arr = candles.map((candle) => {
     return candle[lhoc];
   });
-  arr.sort();
+  arr.sort((a,b)=>a-b);
   let index = Math.round(arr.length * percentile);
 
   return arr[index];
+}
+
+/**
+ *
+ * @param {Array} candles
+ * @param {Number} value
+ * @param {String} lhoc
+ */
+function PercentilePerformance(candles, value, lhoc){
+  lhoc = lhoc === undefined ? "close" : lhoc;
+  let arr = candles.map((candle) => {
+    return candle[lhoc];
+  });
+
+  arr.sort((a,b)=>a-b);
+
+  let index = 0;
+  while(value >= arr[index]){
+    console.log(value, arr[index])
+    index++;
+  }
+
+  return (index)/arr.length;
 }
 
 /**
@@ -429,6 +458,7 @@ module.exports = {
   Lowest: Lowest,
   Macd: Macd,
   PivotPoints: PivotPoints,
+  PercentilePerformance:PercentilePerformance,
   Rms: Rms,
   Rsi: Rsi,
   Roi: Roi,

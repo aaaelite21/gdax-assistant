@@ -9,6 +9,7 @@ const {
   IndexOfLowest,
   Aroon,
   Percentile,
+  PercentilePerformance,
   Roi,
   FibRetracement,
 } = GdaxAssistant.Indicators;
@@ -92,9 +93,51 @@ describe("#Indicators", () => {
       },
     ];
     const clone = arr.slice(0);
-    let percent = Percentile(arr, "close", 0.75);
+    let percent = Percentile(arr, "close", 0.7);
     it("gets the percentile", () => {
       assert.strictEqual(percent, 8);
+    });
+    it("does not change candles", () => {
+      assert.deepEqual(arr, clone);
+    });
+  });
+  describe("#PercentilePerformance", () => {
+    let arr = [
+      {
+        close: 8,
+      },
+      {
+        close: 9,
+      },
+      {
+        close: 7,
+      },
+      {
+        close: 10,
+      },
+      {
+        close: 6,
+      },
+      {
+        close: 1,
+      },
+      {
+        close: 4,
+      },
+      {
+        close: 3,
+      },
+      {
+        close: 2,
+      },
+      {
+        close: 8,
+      },
+    ];
+    const clone = arr.slice(0);
+    let percent = PercentilePerformance(arr, 5);
+    it("gets the percentile", () => {
+      assert.strictEqual(percent, .4);
     });
     it("does not change candles", () => {
       assert.deepEqual(arr, clone);

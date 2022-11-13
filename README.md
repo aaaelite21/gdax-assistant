@@ -30,6 +30,14 @@ A library of useful tools and classes for working with information gathered via 
 
 - Gets the Adx, +Di (pDi) and -Di (nDi) of the current set of data
 
+### PercentilePerformance
+
+- returns a value from 0.00-1.00 corrosponding to position in the data set of the value
+ - if the value is in the top 25% of values the result would be 0.75
+ - the higher the return value the more extreme the value
+
+- example return value: 0.44 (the value falls within the top 56% of values)
+
 ### PivotPoints
 
 - returns two support values (s1, s2) where s1 > s2 and two resistance values (r1, r2) where r1 < r2.

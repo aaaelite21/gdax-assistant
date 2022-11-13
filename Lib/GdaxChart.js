@@ -103,6 +103,11 @@ class GdaxChart {
     return Indicators.Percentile(targetTimeFrame, lhoc, percentile);
   }
 
+  PercentilePerformance(length, value, offset, lhoc){
+    let targetTimeFrame = this.PreProcess(length, offset);
+    return Indicators.PercentilePerformance(targetTimeFrame, value, lhoc);
+  }
+
   PivotPoints(offset) {
     let targetTimeFrame = this.PreProcess(1, offset);
     return Indicators.PivotPoints(targetTimeFrame);
